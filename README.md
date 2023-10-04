@@ -1,2 +1,2 @@
 # notifications_service_system
-Web program which lets to users to send notifications for another person or group of people
+a web application that allows the user to send notifications to a person or group of people

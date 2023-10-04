@@ -29,7 +29,7 @@
 ### Logic for that:
 
 + Separation of the logic for receiving requests and sending notifications
-+ Multiple copies of API and worker services
++ Multiple copies of API and Worker services
 + Kafka distributes the load between sending and receiver services
 + The Realancer monitors the status of notifications, marking them in the database
 

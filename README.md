@@ -4,6 +4,8 @@
 
 ## Base version:
 
+### Requirements:
+
 1. User send data to Server
 2. User create a template - select people and their devices
 3. Send notifications to any receiver's device, while sending to group of people
@@ -17,6 +19,8 @@
 ![scheema1](./service_1.0.png)
 
 ## Advanced version:
+
+### Requirements:
 
 1. Notifications can be sent to a million people simultaneously
 2. All notifications must reach their recipient

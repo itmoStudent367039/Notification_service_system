@@ -24,7 +24,7 @@
 
 1. Notifications can be sent to a million people simultaneously
 2. All notifications must reach their recipient
-3. The sending application should not be the bottleneck, it's death situation should be handled
+3. The sending application should not be the bottleneck, it's a death situation should be handled
 
 ### Logic for that:
 

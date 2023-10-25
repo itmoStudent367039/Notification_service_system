@@ -60,16 +60,24 @@ What you need to send:
 
 Code example:
 ```java
-public void sendMessage(String msg, int peerId){
-        if (msg == null){
+public void sendMessage(String msg, int peerId) {
+    
+        if (msg == null) {
             System.out.println("null");
             return;
         }
+        
         try {
-            vkCore.getVk().messages().send(vkCore.getActor()).peerId(peerId).message(msg).execute();
+            vkCore.getVk()
+            .messages()
+            .send(vkCore.getActor())
+            .peerId(peerId)
+            .message(msg)
+            .execute();
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
+        
     }
 ```
 

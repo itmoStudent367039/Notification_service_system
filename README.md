@@ -16,7 +16,7 @@
 + Using database
 + Intergation with outer sending services like Amazon SES, Twilio, ApplePush , ... , etc
   
-![scheema1](./service_1.0.png)
+![scheema1](presentation/service_1.0.png)
 
 ## Advanced version:
 
@@ -33,5 +33,5 @@
 + Kafka distributes the load between sending and receiver services
 + The Realancer monitors the status of notifications, marking them in the database
 
-![scheema2](./service_2.0.png)
+![scheema2](presentation/service_2.0.png)
 

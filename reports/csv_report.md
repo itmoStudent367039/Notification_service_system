@@ -4,7 +4,7 @@ You can send a message via a "POST" or "GET" request to the Telegram API
 
 In general, it looks like this:
 ```
-https ://api.telegram. org/bot<BOT_TOKEN>/sendMessage?chat_id=<ID_chat>&text=<Message>
+https://api.telegram. org/bot<BOT_TOKEN>/sendMessage?chat_id=<ID_chat>&text=<Message>
 ```
 - We have a token initially
 - Chat ID is the same chat ID with the user

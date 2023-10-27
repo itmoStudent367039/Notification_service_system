@@ -1,13 +1,13 @@
-package ru.ifmo.Notification_service_system.services;
+package ru.ifmo.notificationservice.Notificationservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.ifmo.Notification_service_system.models.Person;
-import ru.ifmo.Notification_service_system.repositories.PeopleRepository;
-import ru.ifmo.Notification_service_system.security.PersonDetails;
+import ru.ifmo.notificationservice.Notificationservice.models.Person;
+import ru.ifmo.notificationservice.Notificationservice.repositories.PeopleRepository;
+import ru.ifmo.notificationservice.Notificationservice.security.PersonDetails;
 
 import java.util.Optional;
 
@@ -21,12 +21,13 @@ public class PersonDetailsService implements UserDetailsService {
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Person> person = peopleRepository.findByLogin(username);
+        Optional<Person> person = peopleRepository.findByUsername(username);
 
         if (person.isEmpty()) {
-            throw new UsernameNotFoundException("User not found!");
+            throw new UsernameNotFoundException(username);
         }
 
         return new PersonDetails(person.get());
     }
+
 }

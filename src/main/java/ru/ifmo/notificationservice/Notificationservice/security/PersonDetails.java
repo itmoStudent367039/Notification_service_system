@@ -1,13 +1,15 @@
-package ru.ifmo.Notification_service_system.security;
+package ru.ifmo.notificationservice.Notificationservice.security;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.ifmo.Notification_service_system.models.Person;
+import ru.ifmo.notificationservice.Notificationservice.models.Person;
 
 import java.util.Collection;
 import java.util.Collections;
 
+@Getter
 public class PersonDetails implements UserDetails {
     private final Person person;
 
@@ -27,7 +29,7 @@ public class PersonDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return person.getLogin();
+        return person.getUsername();
     }
 
     @Override

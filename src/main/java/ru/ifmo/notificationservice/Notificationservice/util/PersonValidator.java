@@ -1,11 +1,11 @@
-package ru.ifmo.Notification_service_system.util;
+package ru.ifmo.notificationservice.Notificationservice.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.ifmo.Notification_service_system.models.Person;
-import ru.ifmo.Notification_service_system.services.PeopleService;
+import ru.ifmo.notificationservice.Notificationservice.models.Person;
+import ru.ifmo.notificationservice.Notificationservice.services.PeopleService;
 
 import java.util.Optional;
 
@@ -26,10 +26,17 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
-        Optional<Person> foundUser = peopleService.findByUsername(person.getLogin());
 
-        if (foundUser.isPresent()) {
-            errors.rejectValue("username", "", "This username already exists");
+        Optional<Person> personByName = peopleService.findByUsername(person.getUsername());
+        Optional<Person> personByEmail = peopleService.findByEmail(person.getEmail());
+
+        if (personByName.isPresent()) {
+            errors.rejectValue("username", "", "This username already reserved");
         }
+
+        if (personByEmail.isPresent()) {
+            errors.rejectValue("email", "", "This email already reserved");
+        }
+
     }
 }

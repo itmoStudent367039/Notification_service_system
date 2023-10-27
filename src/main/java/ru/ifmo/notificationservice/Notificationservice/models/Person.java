@@ -1,41 +1,39 @@
-package ru.ifmo.Notification_service_system.models;
+package ru.ifmo.notificationservice.Notificationservice.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Table(name = "persons")
+@Table(name = "person")
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class Person {
 
     @Id
-    @Column
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
-    @NotEmpty(message = "Login could not be empty")
-    @Size(min = 2, max = 31, message = "Login size is between 2 and 31 symbols")
-    private String login;
+    @Column(name = "username")
+    @NotEmpty(message = "Username could not be empty")
+    @Size(min = 2, max = 31, message = "Username size is between 2 and 31 symbols")
+    private String username;
 
-    @Column
+    @Column(name = "password")
     @NotEmpty(message = "Password could not be empty")
-    @Size(min = 2, max = 31, message = "Login size is between 2 and 31 symbols")
     private String password;
 
-    @Column
+    @Column(name = "email")
     @NotEmpty(message = "Email should not be empty")
     @Email(message = "Email should be valid")
     @Size(max = 63, message = "Email should be less or equals 63 symbols")
     private String email;
 
-    @Column
+    @Column(name = "role")
     private String role;
+
 }

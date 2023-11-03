@@ -30,10 +30,22 @@ public class PeopleService {
         return peopleRepository.findByEmail(email);
     }
 
+
     @Transactional
     public Person save(Person person) {
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         person.setRole("ROLE_USER");
         return peopleRepository.save(person);
     }
+
+    @Transactional
+    public Person update(Person person) {
+        return peopleRepository.save(person);
+    }
+    @Transactional
+    public void delete(Person person) {
+        peopleRepository.delete(person);
+    }
+
+
 }

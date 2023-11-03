@@ -16,12 +16,12 @@ public class JwtUtil {
     @Value("${jwt_secret}")
     private String secret;
 
-    public String generateToken(String username) {
+    public String generateToken(String login) {
         Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60).toInstant());
 
         return JWT.create()
                 .withSubject("User details")
-                .withClaim("login", username)
+                .withClaim("login", login)
                 .withIssuedAt(new Date())
                 .withIssuer("yestai")
                 .withExpiresAt(expirationDate)

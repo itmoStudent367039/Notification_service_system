@@ -16,26 +16,31 @@ import org.hibernate.annotations.DynamicUpdate;
 public class Person {
 
     @Id
-    @Column(name = "id")
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "username")
+    @Column
     @NotEmpty(message = "Username could not be empty")
     @Size(min = 2, max = 31, message = "Username size is between 2 and 31 symbols")
     private String username;
 
-    @Column(name = "password")
+    @Column
     @NotEmpty(message = "Password could not be empty")
     private String password;
 
-    @Column(name = "email")
+    @Column
     @NotEmpty(message = "Email should not be empty")
     @Email(message = "Email should be valid")
     @Size(max = 63, message = "Email should be less or equals 63 symbols")
     private String email;
 
-    @Column(name = "role")
+    @Column
     private String role;
+
+    @Column
+    private Long telegramChatId;
+    @Column
+    private Integer vkId;
 
 }

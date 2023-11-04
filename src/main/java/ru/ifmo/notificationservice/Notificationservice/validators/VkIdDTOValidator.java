@@ -4,17 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import ru.ifmo.notificationservice.Notificationservice.dto.VkIdDTO;
 import ru.ifmo.notificationservice.Notificationservice.models.Person;
 import ru.ifmo.notificationservice.Notificationservice.services.PeopleService;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
-public class UpdateDTOValidator implements Validator {
+public class VkIdDTOValidator implements Validator {
     private final PeopleService peopleService;
 
     @Autowired
-    public UpdateDTOValidator(PeopleService peopleService) {
+    public VkIdDTOValidator(PeopleService peopleService) {
         this.peopleService = peopleService;
     }
 
@@ -25,17 +27,17 @@ public class UpdateDTOValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        Person updateDTO = (Person) target;
+        Person person = (Person) target;
+        Optional<Integer> vkId = Optional.ofNullable(person.getVkId());
 
-        Optional<Person> personByName = peopleService.findByUsername(updateDTO.getUsername());
-        Optional<Person> personByEmail = peopleService.findByEmail(updateDTO.getEmail());
+        if (vkId.isPresent()) {
+            Optional<Person> personByVkId = peopleService.findByVkId(person.getVkId());
 
-        if (personByName.isPresent() && (personByName.get().getId() != updateDTO.getId())) {
-            errors.rejectValue("username", "", "This username already reserved");
-        }
-
-        if (personByEmail.isPresent() && (personByEmail.get().getId() != updateDTO.getId())) {
-            errors.rejectValue("email", "", "This email already reserved");
+            if (personByVkId.isPresent() && (!Objects.equals(personByVkId.get().getId(), person.getId()))) {
+                errors.rejectValue("vkId", "", "This vkId already used");
+            }
+        } else {
+            errors.rejectValue("vkId", "", "vkId is null");
         }
     }
 }

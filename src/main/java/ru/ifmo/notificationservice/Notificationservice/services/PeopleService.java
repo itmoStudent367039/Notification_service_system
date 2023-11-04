@@ -30,6 +30,14 @@ public class PeopleService {
         return peopleRepository.findByEmail(email);
     }
 
+    public Optional<Person> findByVkId(int vkId) {
+        return peopleRepository.findByVkId(vkId);
+    }
+
+    public Optional<Person> findByTelegramChatId(long telegramChatId) {
+        return peopleRepository.findByTelegramChatId(telegramChatId);
+    }
+
 
     @Transactional
     public Person save(Person person) {
@@ -42,6 +50,7 @@ public class PeopleService {
     public Person update(Person person) {
         return peopleRepository.save(person);
     }
+
     @Transactional
     public void delete(Person person) {
         peopleRepository.delete(person);

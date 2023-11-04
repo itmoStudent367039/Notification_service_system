@@ -7,14 +7,15 @@ import org.springframework.validation.Validator;
 import ru.ifmo.notificationservice.Notificationservice.models.Person;
 import ru.ifmo.notificationservice.Notificationservice.services.PeopleService;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
-public class UpdateDTOValidator implements Validator {
+public class TelegramChatIdDTOValidator implements Validator {
     private final PeopleService peopleService;
 
     @Autowired
-    public UpdateDTOValidator(PeopleService peopleService) {
+    public TelegramChatIdDTOValidator(PeopleService peopleService) {
         this.peopleService = peopleService;
     }
 
@@ -25,17 +26,18 @@ public class UpdateDTOValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        Person updateDTO = (Person) target;
+        Person person = (Person) target;
+        Optional<Long> tgId = Optional.ofNullable(person.getTelegramChatId());
 
-        Optional<Person> personByName = peopleService.findByUsername(updateDTO.getUsername());
-        Optional<Person> personByEmail = peopleService.findByEmail(updateDTO.getEmail());
+        if (tgId.isPresent()) {
+            Optional<Person> personByTelegramChatId = peopleService.findByTelegramChatId(person.getTelegramChatId());
 
-        if (personByName.isPresent() && (personByName.get().getId() != updateDTO.getId())) {
-            errors.rejectValue("username", "", "This username already reserved");
+            if (personByTelegramChatId.isPresent() && (!Objects.equals(personByTelegramChatId.get().getId(), person.getId()))) {
+                errors.rejectValue("telegramChatId", "", "This telegram chat id already used");
+            }
+        } else {
+            errors.rejectValue("telegramChatId", "", "telegramChatId is null");
         }
 
-        if (personByEmail.isPresent() && (personByEmail.get().getId() != updateDTO.getId())) {
-            errors.rejectValue("email", "", "This email already reserved");
-        }
     }
 }

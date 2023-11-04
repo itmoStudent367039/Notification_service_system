@@ -6,6 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.ifmo.notificationservice.Notificationservice.util.PersonErrorResponse;
 import ru.ifmo.notificationservice.Notificationservice.util.ValidException;
 
@@ -39,5 +40,16 @@ public class PersonExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    private ResponseEntity<PersonErrorResponse> handleException() {
+        var response = new PersonErrorResponse(
+                Collections.singletonMap("error", "id"),
+                System.currentTimeMillis()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
 
 }

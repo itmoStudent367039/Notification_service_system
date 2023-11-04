@@ -46,8 +46,12 @@ public class AuthController {
     @PostMapping("/registration")
     public ResponseEntity<PersonView> performRegistration(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult result) throws ValidException {
         registrationValidator.validate(registrationDTO, result);
-        Person converted = objectConverter.convertToObject(registrationDTO, Person.class);
         checker.throwIfBindResultHasErrors(result);
+
+        Person converted = objectConverter.convertToObject(
+                registrationDTO,
+                Person.class
+        );
 
         return constructor.makeOkResponse(
                 objectConverter.convertToObject(peopleService.save(converted), PersonView.class),

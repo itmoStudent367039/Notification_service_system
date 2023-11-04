@@ -10,4 +10,8 @@ public interface PeopleRepository extends JpaRepository<Person, Integer> {
 
     Optional<Person> findByEmail(String email);
 
+    Optional<Person> findByVkId(int vkId);
+
+    Optional<Person> findByTelegramChatId(long telegramChatId);
+
 }

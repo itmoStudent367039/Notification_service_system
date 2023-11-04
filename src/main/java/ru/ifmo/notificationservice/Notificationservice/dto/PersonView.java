@@ -11,6 +11,12 @@ public class PersonView {
 
     private String email;
 
+    private String role;
+
+    private Long telegramChatId;
+
+    private Integer vkId;
+
     private final long timestamp = System.currentTimeMillis();
 
 }

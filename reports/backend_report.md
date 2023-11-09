@@ -86,7 +86,7 @@ http://localhost:8080/auth/confirm?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ey
 ```
 
 ***Response (Success, status = 200):***
-
++ *Also, in header - "Authorization" exists a jwt token, which frontend should send to Server, after login to get or set any data(add this token to header - "Authorization" with format: "Bearer {token}"), whitout it user will receive 403 code*
 
 ```json
 {

@@ -15,19 +15,23 @@ import java.util.Date;
 public class JwtUtil {
   @Value("${jwt_secret}")
   private String secret;
+  public static final long CONFIRM_EMAIL_TOKEN_LIFE_TIME_MINUTES = 15;
+  public static final long USER_TOKEN_LIFE_TIME_MINUTES = 60;
 
-  public String generateToken(String login) {
-    Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60).toInstant());
+  // TODO: вынести все в константы https://www.javaguides.net/2023/05/spring-boot-spring-security-jwt-mysql.html
+  public String generateToken(String email, long lifeTimeMinutes) {
+    Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(lifeTimeMinutes).toInstant());
 
     return JWT.create()
         .withSubject("User details")
-        .withClaim("login", login)
+        .withClaim("email", email)
         .withIssuedAt(new Date())
         .withIssuer("yestai")
         .withExpiresAt(expirationDate)
         .sign(Algorithm.HMAC256(secret));
   }
 
+  // TODO: вынести все в константы https://www.javaguides.net/2023/05/spring-boot-spring-security-jwt-mysql.html
   public String validateTokenAndRetrieveClaim(String token) throws JWTVerificationException {
     JWTVerifier verifier =
         JWT.require(Algorithm.HMAC256(secret))
@@ -36,6 +40,6 @@ public class JwtUtil {
             .build();
 
     DecodedJWT jwt = verifier.verify(token);
-    return jwt.getClaim("login").asString();
+    return jwt.getClaim("email").asString();
   }
 }

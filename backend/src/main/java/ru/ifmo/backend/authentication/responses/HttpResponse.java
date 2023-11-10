@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
 
 @SuperBuilder
 @Data
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HttpResponse {
   private ZonedDateTime timestamp;
   private String message;

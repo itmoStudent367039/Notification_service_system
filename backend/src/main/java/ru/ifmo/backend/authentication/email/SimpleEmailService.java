@@ -30,6 +30,7 @@ public class SimpleEmailService implements EmailService {
   public void sendConfirmAccountMessage(String name, String to, String token)
       throws MailException {
 
+    // TODO: check (Is domain of user email exists, and throw error if not)
     SimpleMailMessage message = new SimpleMailMessage();
     message.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
     message.setFrom(from);

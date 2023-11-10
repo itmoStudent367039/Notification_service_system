@@ -57,7 +57,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/registration")
                     .permitAll()
 
-                    // TODO: normal matcher like (confirm?=**) tutorials in telegram Base -> Web
+                    // TODO: normal matcher like (confirm?=**) tutorials in telegram Base -> Web, bind it with cors!
                     .requestMatchers("/auth/confirm**")
                     .permitAll()
                     .anyRequest()
@@ -71,6 +71,7 @@ public class SecurityConfig {
 
   @Bean
   public CorsFilter corsFilter() {
+    // TODO: add normal cors configuration! https://www.baeldung.com/spring-cors
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);

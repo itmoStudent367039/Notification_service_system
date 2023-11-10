@@ -2,8 +2,6 @@ package ru.ifmo.backend.authentication.responses;
 
 import lombok.Data;
 
-import java.time.ZonedDateTime;
-
 @Data
 public class PersonView {
 

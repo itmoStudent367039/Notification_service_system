@@ -76,10 +76,8 @@ public class AuthenticationService {
 
     emailService.sendConfirmAccountMessage(saved.getUsername(), saved.getEmail(), token);
 
-    PersonView view = objectConverter.convertToObject(saved, PersonView.class);
-
-    return constructor.singletonPersonResponse(
-        constructor.buildHttpResponse(view, SUCCESSFULLY_REGISTER), token, HttpStatus.CREATED);
+    return constructor.buildResponseEntityWithToken(
+        constructor.buildHttpResponseWithoutView(SUCCESSFULLY_REGISTER), token, HttpStatus.CREATED);
   }
 
   public ResponseEntity<HttpResponse> login(LoginDTO loginDTO, BindingResult bindingResult)
@@ -96,13 +94,14 @@ public class AuthenticationService {
 
     PersonView view = objectConverter.convertToObject(person, PersonView.class);
 
-    return constructor.singletonPersonResponse(
-        constructor.buildHttpResponse(view, SUCCESSFULLY_LOGIN), token, HttpStatus.OK);
+    return constructor.buildResponseEntityWithToken(
+        constructor.buildHttpResponseWithView(view, SUCCESSFULLY_LOGIN), token, HttpStatus.OK);
   }
 
   public void confirmAccount(String token)
       throws JWTVerificationException, UsernameNotFoundException {
-    // TODO: if token is expired => allow user choose: 1) delete account, 2) resend email with new token
+    // TODO: if token is expired => allow user choose: 1) delete account, 2) resend email with new one
+    // token
     String email = jwtUtil.validateTokenAndRetrieveClaim(token);
     Optional<Person> personOptional = peopleService.findByEmail(email);
 

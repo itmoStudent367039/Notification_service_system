@@ -19,15 +19,8 @@
 
 ```json
 {
-  "timestamp": "2023-11-09T22:25:22.0969513+03:00",
-  "message": "successfully register",
-  "data": {
-    "username": "yestai",
-    "email": "igor.abdullin.95@mail.ru",
-    "role": "ROLE_USER",
-    "telegramChatId": null,
-    "vkId": null
-  }
+    "timestamp": "2023-11-10T15:34:15.0656118+03:00",
+    "message": "successfully register"
 }
 ```
 

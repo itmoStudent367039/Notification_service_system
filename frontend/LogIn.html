@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Log in</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/StyleLogIn.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/WindowSwitch.js"></script>
+  </head>
+  <body>
+    <div
+      class="container-login100"
+      style="background-image: url('media/bg-01.jpg')"
+    >
+      <div class="generalBlock">
+        <label class="tab active" id="LogInTab">Log in</label>
+        <label class="tab" id="SignUpTab">Sign up</label>
+        <form class="tab-form active">
+          <div class="logo">
+            <img
+              class="imgLogo"
+              src="media/logo.png"
+              alt="Notification System"
+            />
+          </div>
+          <div class="registrationFields">
+            <label class="text-field__label" for="username"
+              >Имя пользователя
+            </label>
+            <br />
+            <span class="text-field__icon input-item"
+              ><i class="fa fa-user-circle"></i
+            ></span>
+            <input
+              class="text-field__input"
+              placeholder="Username"
+              type="text"
+              th:field="*{username}"
+              id="username"
+            />
+            <br />
+            <label class="text-field__label" for="password">Пароль</label>
+            <br />
+            <span class="text-field__icon input-item"
+              ><i class="fa fa-key"></i
+            ></span>
+            <input
+              class="text-field__input"
+              placeholder="Password"
+              type="password"
+              th:field="*{password}"
+              id="password"
+            />
+            <br />
+          </div>
+          <button class="btn-new">
+            <span>Log in</span>
+          </button>
+        </form>
+
+        <form class="tab-form">
+          <div class="logo">
+            <img
+              class="imgLogo"
+              src="media/logo.png"
+              alt="Notification System"
+            />
+          </div>
+          <div class="registrationFields">
+            <label class="text-field__label" for="username"
+              >Имя пользователя
+            </label>
+            <br />
+            <span class="text-field__icon input-item"
+              ><i class="fa fa-user-circle"></i
+            ></span>
+            <input
+              class="text-field__input"
+              placeholder="Username"
+              type="text"
+              th:field="*{username}"
+              id="username"
+            />
+            <br />
+            <label class="text-field__label" for="mail">Почта</label>
+            <br />
+            <span class="text-field__icon input-item"
+              ><i class="fa fa-envelope-o"></i
+            ></span>
+            <input
+              class="text-field__input"
+              placeholder="Mail"
+              type="text"
+              th:field="*{mail}"
+              id="mail"
+            />
+            <br />
+            <label class="text-field__label" for="password">Пароль</label>
+            <br />
+            <span class="text-field__icon input-item"
+              ><i class="fa fa-key"></i
+            ></span>
+            <input
+              class="text-field__input"
+              placeholder="Password"
+              type="password"
+              th:field="*{password}"
+              id="password"
+            />
+            <br />
+          </div>
+          <button class="btn-new">
+            <span>Sign up</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

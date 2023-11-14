@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Notification System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/StyleLogIn.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="shortcut icon" href="media/i.png" />
+  </head>
+  <body>
+    <div
+      class="container-login100"
+      style="background-image: url('media/bg-01.jpg')"
+    >
+      <div class="generalBlock" id="generalBlock">
+        <label class="tab active" id="LogInTab">Log in</label>
+        <label class="tab" id="SignUpTab">Sign up</label>
+        <div class="tab-form active">
+          <div class="logo">
+            <img
+              class="imgLogo"
+              src="media/logo.png"
+              alt="Notification System"
+            />
+          </div>
+          <div class="registrationFields">
+            <label class="text-field__label" for="username1"
+              >Имя пользователя
+            </label>
+            <br />
+            <span class="text-field__icon input-item"
+              ><i class="fa fa-user-circle"></i
+            ></span>
+            <input
+              class="text-field__input"
+              placeholder="Username"
+              type="text"
+              id="username1"
+            />
+            <br />
+            <label class="text-field__label" for="password1">Пароль</label>
+            <br />
+            <span class="text-field__icon input-item"
+              ><i class="fa fa-key"></i
+            ></span>
+            <input
+              class="text-field__input"
+              placeholder="Password"
+              type="password"
+              id="password1"
+            />
+            <br />
+          </div>
+          <button class="btn-new btnLogIn" id="logInBtn">
+            <span>Log in</span>
+          </button>
+        </div>
+
+        <div class="tab-form">
+          <div class="logo">
+            <img
+              class="imgLogo"
+              src="media/logo.png"
+              alt="Notification System"
+            />
+          </div>
+          <div class="registrationFields">
+            <label class="text-field__label" for="username2"
+              >Имя пользователя
+            </label>
+            <br />
+            <span class="text-field__icon input-item"
+              ><i class="fa fa-user-circle"></i
+            ></span>
+            <input
+              class="text-field__input"
+              placeholder="Username"
+              type="text"
+              id="username2"
+            />
+            <br />
+            <label class="text-field__label" for="mail">Почта</label>
+            <br />
+            <span class="text-field__icon input-item"
+              ><i class="fa fa-envelope-o"></i
+            ></span>
+            <input
+              class="text-field__input"
+              placeholder="Mail"
+              type="text"
+              id="mail"
+            />
+            <br />
+            <label class="text-field__label" for="password2">Пароль</label>
+            <br />
+            <span class="text-field__icon input-item"
+              ><i class="fa fa-key"></i
+            ></span>
+            <input
+              class="text-field__input"
+              placeholder="Password"
+              type="password"
+              id="password2"
+            />
+            <br />
+          </div>
+          <button class="btn-new btnSignUp" id="signUpBtn">
+            <span>Sign up</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- <script src="https://unpkg.com/react@18/umd/react.development.js"></script> -->
+    <!-- <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script> -->
+    <!-- <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> -->
+    <script src="js/FormSwitch.js"></script>
+    <script src="js/Initialization.js"></script>
+    <script src="js/DataSender.js"></script>
+    <script src="js/ResponseHandler.js"></script>
+  </body>
+</html>

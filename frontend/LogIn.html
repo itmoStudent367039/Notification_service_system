@@ -2,9 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="UTF-8" />
-    <title>Log in</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <title>Notification System</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
       rel="stylesheet"
@@ -15,17 +13,17 @@
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="js/WindowSwitch.js"></script>
+    <link rel="shortcut icon" href="media/i.png" />
   </head>
   <body>
     <div
       class="container-login100"
       style="background-image: url('media/bg-01.jpg')"
     >
-      <div class="generalBlock">
+      <div class="generalBlock" id="generalBlock">
         <label class="tab active" id="LogInTab">Log in</label>
         <label class="tab" id="SignUpTab">Sign up</label>
-        <form class="tab-form active">
+        <div class="tab-form active">
           <div class="logo">
             <img
               class="imgLogo"
@@ -34,7 +32,7 @@
             />
           </div>
           <div class="registrationFields">
-            <label class="text-field__label" for="username"
+            <label class="text-field__label" for="username1"
               >Имя пользователя
             </label>
             <br />
@@ -45,11 +43,10 @@
               class="text-field__input"
               placeholder="Username"
               type="text"
-              th:field="*{username}"
-              id="username"
+              id="username1"
             />
             <br />
-            <label class="text-field__label" for="password">Пароль</label>
+            <label class="text-field__label" for="password1">Пароль</label>
             <br />
             <span class="text-field__icon input-item"
               ><i class="fa fa-key"></i
@@ -58,17 +55,16 @@
               class="text-field__input"
               placeholder="Password"
               type="password"
-              th:field="*{password}"
-              id="password"
+              id="password1"
             />
             <br />
           </div>
-          <button class="btn-new">
+          <button class="btn-new btnLogIn" id="logInBtn">
             <span>Log in</span>
           </button>
-        </form>
+        </div>
 
-        <form class="tab-form">
+        <div class="tab-form">
           <div class="logo">
             <img
               class="imgLogo"
@@ -77,7 +73,7 @@
             />
           </div>
           <div class="registrationFields">
-            <label class="text-field__label" for="username"
+            <label class="text-field__label" for="username2"
               >Имя пользователя
             </label>
             <br />
@@ -88,8 +84,7 @@
               class="text-field__input"
               placeholder="Username"
               type="text"
-              th:field="*{username}"
-              id="username"
+              id="username2"
             />
             <br />
             <label class="text-field__label" for="mail">Почта</label>
@@ -101,11 +96,10 @@
               class="text-field__input"
               placeholder="Mail"
               type="text"
-              th:field="*{mail}"
               id="mail"
             />
             <br />
-            <label class="text-field__label" for="password">Пароль</label>
+            <label class="text-field__label" for="password2">Пароль</label>
             <br />
             <span class="text-field__icon input-item"
               ><i class="fa fa-key"></i
@@ -114,16 +108,22 @@
               class="text-field__input"
               placeholder="Password"
               type="password"
-              th:field="*{password}"
-              id="password"
+              id="password2"
             />
             <br />
           </div>
-          <button class="btn-new">
+          <button class="btn-new btnSignUp" id="signUpBtn">
             <span>Sign up</span>
           </button>
-        </form>
+        </div>
       </div>
     </div>
+    <!-- <script src="https://unpkg.com/react@18/umd/react.development.js"></script> -->
+    <!-- <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script> -->
+    <!-- <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> -->
+    <script src="js/FormSwitch.js"></script>
+    <script src="js/Initialization.js"></script>
+    <script src="js/DataSender.js"></script>
+    <script src="js/ResponseHandler.js"></script>
   </body>
 </html>

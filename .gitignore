@@ -1,0 +1,4 @@
+/HELP.md
+/.gitignore
+/frontend.iml
+/backend/src/main/resources/application-dev.yml

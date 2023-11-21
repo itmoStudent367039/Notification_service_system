@@ -13,33 +13,50 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-  @Value("${jwt_secret}")
-  private String secret;
-  public static final long CONFIRM_EMAIL_TOKEN_LIFE_TIME_MINUTES = 15;
-  public static final long USER_TOKEN_LIFE_TIME_MINUTES = 60;
 
-  // TODO: вынести все в константы https://www.javaguides.net/2023/05/spring-boot-spring-security-jwt-mysql.html
-  public String generateToken(String email, long lifeTimeMinutes) {
+  @Value("${jwt.jwtSecret}")
+  private String secret;
+
+  @Value("${jwt.expirationConfirmTime}")
+  private long confirmTime;
+
+  @Value("${jwt.expirationUserTime}")
+  private long userTime;
+
+  @Value("${jwt.issuer}")
+  private String issuer;
+
+  @Value("${jwt.subject}")
+  private String subject;
+
+  @Value("${jwt.claimName}")
+  private String claimName;
+
+  private String generateToken(String email, long lifeTimeMinutes) {
     Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(lifeTimeMinutes).toInstant());
 
     return JWT.create()
-        .withSubject("User details")
-        .withClaim("email", email)
+        .withSubject(subject)
+        .withClaim(claimName, email)
         .withIssuedAt(new Date())
-        .withIssuer("yestai")
+        .withIssuer(issuer)
         .withExpiresAt(expirationDate)
         .sign(Algorithm.HMAC256(secret));
   }
 
-  // TODO: вынести все в константы https://www.javaguides.net/2023/05/spring-boot-spring-security-jwt-mysql.html
+  public String generateTokenWithConfirmExpirationTime(String email) {
+    return generateToken(email, confirmTime);
+  }
+
+  public String generateTokenWithCommonUserTime(String email) {
+    return generateToken(email, userTime);
+  }
+
   public String validateTokenAndRetrieveClaim(String token) throws JWTVerificationException {
     JWTVerifier verifier =
-        JWT.require(Algorithm.HMAC256(secret))
-            .withSubject("User details")
-            .withIssuer("yestai")
-            .build();
+        JWT.require(Algorithm.HMAC256(secret)).withSubject(subject).withIssuer(issuer).build();
 
     DecodedJWT jwt = verifier.verify(token);
-    return jwt.getClaim("email").asString();
+    return jwt.getClaim(claimName).asString();
   }
 }

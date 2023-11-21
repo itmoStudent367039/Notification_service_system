@@ -40,4 +40,11 @@ spring:
 server:
   port: ${SERVER_PORT:8080}
 
-jwt_secret: small_talk
+jwt:
+  jwtSecret: ${SECRET_WORD}
+  expirationConfirmTime: ${EXPIRATION_CONFIRM}
+  expirationUserTime: ${EXPIRATION_USER_TIME}
+  issuer: ${ISSUER}
+  subject: ${SUBJECT}
+  claimName: ${CLAIM_NAME}
+

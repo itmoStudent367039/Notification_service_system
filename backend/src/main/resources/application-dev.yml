@@ -1,0 +1,25 @@
+#Database
+POSTGRES_SQL_USERNAME: s367039
+POSTGRES_SQL_PASSWORD: TaBaCOQJEFRJDdL6
+POSTGRES_SQL_PORT: 5432
+POSTGRES_SQL_DB: studs
+POSTGRES_SQL_HOST: localhost
+
+#Server
+SERVER_PORT: 8080
+ACTIVE_PROFILE: dev
+
+#Email config
+EMAIL_HOST: smtp.gmail.com
+EMAIL_PORT: 587
+EMAIL_ID: igor.abdullin.2004@gmail.com
+EMAIL_PASSWORD: fobfllhkdwazxkon
+VERIFY_EMAIL_HOST: http://localhost:${SERVER_PORT}
+
+#Jwt token config
+SECRET_WORD: small_talk
+EXPIRATION_CONFIRM: 15
+EXPIRATION_USER_TIME: 20
+ISSUER: yestai
+SUBJECT: User details
+CLAIM_NAME: email

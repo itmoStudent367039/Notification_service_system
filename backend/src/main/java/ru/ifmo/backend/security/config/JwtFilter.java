@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.ifmo.backend.security.JwtUtil;
 import ru.ifmo.backend.user.services.PersonDetailsService;
@@ -28,44 +29,45 @@ public class JwtFilter extends OncePerRequestFilter {
     this.service = service;
   }
 
-  /* TODO: reformat function, decompose it, maybe need use not header with name "Authorization"!
-       https://www.javaguides.net/2023/05/spring-boot-spring-security-jwt-mysql.html
-  */
   @Override
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
+      throws ServletException, IOException, JWTVerificationException, UsernameNotFoundException {
 
-    String authHeader = request.getHeader("Authorization");
+    String jwt = extractJwtFromHeader(request);
 
-    if (authHeader == null || authHeader.isBlank() || !authHeader.startsWith("Bearer ")) {
-      filterChain.doFilter(request, response);
-      return;
-    }
-
-    String jwt = authHeader.split(" ")[1].trim();
-
-    if (jwt.isBlank()) {
-      filterChain.doFilter(request, response);
-      return;
-    }
-
-    try {
-      String email = jwtUtil.validateTokenAndRetrieveClaim(jwt);
+    if (StringUtils.hasText(jwt)) {
+      String email = getEmailFromJwt(jwt);
       UserDetails userDetails = service.loadUserByUsername(email);
 
-      UsernamePasswordAuthenticationToken authenticationToken =
-          new UsernamePasswordAuthenticationToken(
-              userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-
       if (SecurityContextHolder.getContext().getAuthentication() == null) {
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        this.authenticateUser(userDetails);
       }
-
-    } catch (JWTVerificationException | UsernameNotFoundException e) {
-      return;
     }
 
     filterChain.doFilter(request, response);
+  }
+
+  private String extractJwtFromHeader(HttpServletRequest httpRequest) {
+
+    String authHeader = httpRequest.getHeader("Authorization");
+
+    if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+      return authHeader.split(" ")[1].trim();
+    }
+
+    return null;
+  }
+
+  private String getEmailFromJwt(String jwt) throws JWTVerificationException {
+    return jwtUtil.validateTokenAndRetrieveClaim(jwt);
+  }
+
+  private void authenticateUser(UserDetails userDetails) {
+    UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(
+            userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+
+    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
   }
 }

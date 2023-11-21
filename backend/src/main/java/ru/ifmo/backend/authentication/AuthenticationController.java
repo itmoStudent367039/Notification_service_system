@@ -1,6 +1,7 @@
 package ru.ifmo.backend.authentication;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.ifmo.backend.authentication.dto.LoginDTO;
 import ru.ifmo.backend.authentication.dto.RegistrationDTO;
 import ru.ifmo.backend.authentication.responses.HttpResponse;
+import ru.ifmo.backend.authentication.validators.DomainNotExists;
 import ru.ifmo.backend.authentication.validators.ValidException;
+
+import java.net.UnknownHostException;
 
 @Controller
 @RequestMapping("/auth")
@@ -28,7 +32,7 @@ public class AuthenticationController {
   @ResponseBody
   public ResponseEntity<HttpResponse> performRegistration(
       @RequestBody @Valid RegistrationDTO registrationDTO, BindingResult result)
-      throws ValidException {
+      throws ValidException, UnknownHostException, DomainNotExists {
 
     return authenticationService.register(registrationDTO, result);
   }
@@ -50,6 +54,9 @@ public class AuthenticationController {
     } catch (UsernameNotFoundException e) {
       model.addAttribute("emailNotFound", e.getMessage());
     } catch (JWTVerificationException e) {
+      if (e instanceof TokenExpiredException) {
+        model.addAttribute("registrationLink", "http://localhost:5432/auth");
+      }
       model.addAttribute("tokenError", e.getMessage());
     }
 

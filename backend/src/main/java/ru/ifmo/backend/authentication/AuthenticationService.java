@@ -17,6 +17,7 @@ import ru.ifmo.backend.authentication.email.EmailService;
 import ru.ifmo.backend.authentication.responses.HttpResponse;
 import ru.ifmo.backend.authentication.responses.PersonView;
 import ru.ifmo.backend.authentication.responses.ResponseConstructor;
+import ru.ifmo.backend.authentication.validators.DomainValidator;
 import ru.ifmo.backend.authentication.validators.RegistrationValidator;
 import ru.ifmo.backend.security.JwtUtil;
 import ru.ifmo.backend.user.Person;
@@ -26,6 +27,7 @@ import ru.ifmo.backend.authentication.validators.BindingChecker;
 import ru.ifmo.backend.util.ObjectConverter;
 import ru.ifmo.backend.authentication.validators.ValidException;
 
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 @Service
@@ -38,6 +40,7 @@ public class AuthenticationService {
   private final PeopleService peopleService;
   private final JwtUtil jwtUtil;
   private final EmailService emailService;
+  private final DomainValidator domainValidator;
   private static final String SUCCESSFULLY_LOGIN = "successfully login";
   private static final String SUCCESSFULLY_REGISTER = "successfully register";
 
@@ -50,7 +53,8 @@ public class AuthenticationService {
       ObjectConverter objectConverter,
       PeopleService peopleService,
       JwtUtil jwtUtil,
-      EmailService emailService) {
+      EmailService emailService,
+      DomainValidator domainValidator) {
     this.constructor = constructor;
     this.authenticationManager = authenticationManager;
     this.registrationValidator = registrationValidator;
@@ -59,20 +63,21 @@ public class AuthenticationService {
     this.peopleService = peopleService;
     this.jwtUtil = jwtUtil;
     this.emailService = emailService;
+    this.domainValidator = domainValidator;
   }
 
   public ResponseEntity<HttpResponse> register(
       RegistrationDTO registrationDTO, BindingResult bindingResult)
-      throws ValidException, MailException {
+      throws ValidException, MailException, UnknownHostException {
 
+    domainValidator.throwExceptionIfDomainNotExists(registrationDTO.getEmail());
     registrationValidator.validate(registrationDTO, bindingResult);
     checker.throwIfBindResultHasErrors(bindingResult);
 
     Person saved =
         peopleService.save(objectConverter.convertToObject(registrationDTO, Person.class));
 
-    String token =
-        jwtUtil.generateToken(saved.getEmail(), JwtUtil.CONFIRM_EMAIL_TOKEN_LIFE_TIME_MINUTES);
+    String token = jwtUtil.generateTokenWithConfirmExpirationTime(saved.getEmail());
 
     emailService.sendConfirmAccountMessage(saved.getUsername(), saved.getEmail(), token);
 
@@ -90,7 +95,7 @@ public class AuthenticationService {
             new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
 
     Person person = ((PersonDetails) authentication.getPrincipal()).getPerson();
-    String token = jwtUtil.generateToken(person.getEmail(), JwtUtil.USER_TOKEN_LIFE_TIME_MINUTES);
+    String token = jwtUtil.generateTokenWithCommonUserTime(person.getEmail());
 
     PersonView view = objectConverter.convertToObject(person, PersonView.class);
 
@@ -100,8 +105,7 @@ public class AuthenticationService {
 
   public void confirmAccount(String token)
       throws JWTVerificationException, UsernameNotFoundException {
-    // TODO: if token is expired => allow user choose: 1) delete account, 2) resend email with new one
-    // token
+
     String email = jwtUtil.validateTokenAndRetrieveClaim(token);
     Optional<Person> personOptional = peopleService.findByEmail(email);
 

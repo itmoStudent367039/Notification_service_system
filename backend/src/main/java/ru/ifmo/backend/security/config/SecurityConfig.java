@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -56,9 +57,7 @@ public class SecurityConfig {
                     .hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/registration")
                     .permitAll()
-
-                    // TODO: normal matcher like (confirm?=**) tutorials in telegram Base -> Web, bind it with cors!
-                    .requestMatchers("/auth/confirm**")
+                    .requestMatchers(new AntPathRequestMatcher("/auth/confirm/**"))
                     .permitAll()
                     .anyRequest()
                     .hasAnyRole("USER", "ADMIN"))
@@ -71,7 +70,6 @@ public class SecurityConfig {
 
   @Bean
   public CorsFilter corsFilter() {
-    // TODO: add normal cors configuration! https://www.baeldung.com/spring-cors
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);

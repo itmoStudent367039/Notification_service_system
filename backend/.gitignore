@@ -38,4 +38,4 @@ out/
 /settings.gradle
 
 ### Properties ###
-/src/main/resources/application-dev.yml
+./src/main/

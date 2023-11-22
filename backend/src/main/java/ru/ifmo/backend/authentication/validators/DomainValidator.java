@@ -1,6 +1,7 @@
 package ru.ifmo.backend.authentication.validators;
 
 import org.springframework.stereotype.Component;
+import ru.ifmo.backend.authentication.exceptions.DomainNotExists;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

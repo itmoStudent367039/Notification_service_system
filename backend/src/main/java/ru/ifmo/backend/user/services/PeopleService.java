@@ -1,7 +1,6 @@
 package ru.ifmo.backend.user.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ifmo.backend.user.Person;
@@ -14,12 +13,10 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class PeopleService {
   private final PersonRepository peopleRepository;
-  private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public PeopleService(PersonRepository peopleRepository, PasswordEncoder passwordEncoder) {
+  public PeopleService(PersonRepository peopleRepository) {
     this.peopleRepository = peopleRepository;
-    this.passwordEncoder = passwordEncoder;
   }
 
   public Optional<Person> findByUsername(String username) {
@@ -33,7 +30,6 @@ public class PeopleService {
   @Transactional
   public Person save(Person person) {
     person.setRole(PersonRole.ROLE_USER);
-    person.setPassword(passwordEncoder.encode(person.getPassword()));
     return peopleRepository.save(person);
   }
 

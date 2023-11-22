@@ -38,3 +38,5 @@ out/
 /settings.gradle
 
 ### Properties ###
+docker-compose.yml
+/Dockerfile

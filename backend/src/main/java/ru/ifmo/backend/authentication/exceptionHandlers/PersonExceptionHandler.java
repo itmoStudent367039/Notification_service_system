@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.ifmo.backend.authentication.responses.ErrorResponse;
-import ru.ifmo.backend.authentication.validators.DomainNotExists;
-import ru.ifmo.backend.authentication.validators.ValidException;
+import ru.ifmo.backend.authentication.exceptions.BounceMessageException;
+import ru.ifmo.backend.authentication.exceptions.DomainNotExists;
+import ru.ifmo.backend.authentication.exceptions.ValidException;
 
 import java.net.UnknownHostException;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -46,6 +48,12 @@ public class PersonExceptionHandler {
             Collections.singletonMap(MESSAGE_FIELD_NAME, e.getMessage()), ZonedDateTime.now());
 
     return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler
+  private ResponseEntity<List<String>> handleException(BounceMessageException e) {
+    // TODO: logging, just send a 500 (smth wrong)
+    return new ResponseEntity<>(e.getMessages(), HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler

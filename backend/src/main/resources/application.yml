@@ -48,3 +48,7 @@ jwt:
   subject: ${SUBJECT}
   claimName: ${CLAIM_NAME}
 
+zero-bounce:
+  key: ${BOUNCE_KEY}
+  ip: ${IP}
+

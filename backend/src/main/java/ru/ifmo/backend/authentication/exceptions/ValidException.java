@@ -1,4 +1,4 @@
-package ru.ifmo.backend.authentication.validators;
+package ru.ifmo.backend.authentication.exceptions;
 
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;

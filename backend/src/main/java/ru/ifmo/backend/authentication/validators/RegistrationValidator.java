@@ -1,10 +1,12 @@
 package ru.ifmo.backend.authentication.validators;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.ifmo.backend.authentication.dto.RegistrationDTO;
+import ru.ifmo.backend.authentication.exceptions.BounceMessageException;
 import ru.ifmo.backend.user.services.PeopleService;
 import ru.ifmo.backend.user.Person;
 
@@ -20,12 +22,13 @@ public class RegistrationValidator implements Validator {
   }
 
   @Override
-  public boolean supports(Class<?> clazz) {
+  public boolean supports(@NonNull Class<?> clazz) {
     return RegistrationDTO.class.equals(clazz);
   }
 
   @Override
-  public void validate(Object target, Errors errors) {
+  public void validate(@NonNull Object target, @NonNull Errors errors)
+      throws BounceMessageException {
     RegistrationDTO registrationDTO = (RegistrationDTO) target;
 
     Optional<Person> personByName = peopleService.findByUsername(registrationDTO.getUsername());

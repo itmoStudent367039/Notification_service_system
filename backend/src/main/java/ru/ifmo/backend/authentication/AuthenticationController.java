@@ -5,6 +5,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.ifmo.backend.authentication.dto.LoginDTO;
 import ru.ifmo.backend.authentication.dto.RegistrationDTO;
 import ru.ifmo.backend.authentication.responses.HttpResponse;
-import ru.ifmo.backend.authentication.validators.DomainNotExists;
-import ru.ifmo.backend.authentication.validators.ValidException;
+import ru.ifmo.backend.authentication.exceptions.BounceMessageException;
+import ru.ifmo.backend.authentication.exceptions.DomainNotExists;
+import ru.ifmo.backend.authentication.exceptions.ValidException;
 
 import java.net.UnknownHostException;
 
@@ -32,7 +34,7 @@ public class AuthenticationController {
   @ResponseBody
   public ResponseEntity<HttpResponse> performRegistration(
       @RequestBody @Valid RegistrationDTO registrationDTO, BindingResult result)
-      throws ValidException, UnknownHostException, DomainNotExists {
+      throws ValidException, UnknownHostException, DomainNotExists, BounceMessageException {
 
     return authenticationService.register(registrationDTO, result);
   }
@@ -61,5 +63,13 @@ public class AuthenticationController {
     }
 
     return "confirmAccount/failed";
+  }
+
+  @PostMapping("/resend-token")
+  public ResponseEntity<HttpResponse> resendConfirmToken(
+      @RequestBody @Valid LoginDTO loginDTO, BindingResult result)
+      throws ValidException, UsernameNotFoundException, BadCredentialsException {
+
+    return authenticationService.resendConfirmToken(loginDTO, result);
   }
 }

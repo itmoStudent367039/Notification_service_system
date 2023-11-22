@@ -55,7 +55,8 @@ public class SecurityConfig {
             auth ->
                 auth.requestMatchers("/admin")
                     .hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/registration")
+                    .requestMatchers(
+                        HttpMethod.POST, "/auth/login", "/auth/registration", "auth/resend-token")
                     .permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/auth/confirm/**"))
                     .permitAll()

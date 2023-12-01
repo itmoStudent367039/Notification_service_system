@@ -1,0 +1,10 @@
+#Server
+ACTIVE_PROFILE: dev
+
+#Jwt token config
+SECRET_WORD: small_talk
+EXPIRATION_CONFIRM: 15
+EXPIRATION_USER_TIME: 20
+ISSUER: yestai
+SUBJECT: User details
+CLAIM_NAME: email

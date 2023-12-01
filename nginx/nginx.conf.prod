@@ -16,6 +16,6 @@ server {
   }
 
   location /auth {
-    proxy_pass http://auth:3001;
+    proxy_pass http://auth-api:3001;
   }
 }

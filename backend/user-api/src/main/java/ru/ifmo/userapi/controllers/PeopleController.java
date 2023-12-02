@@ -19,7 +19,7 @@ public class PeopleController {
     this.service = service;
   }
 
-  @PostMapping("/create")
+  @PostMapping()
   public ResponseEntity<Void> createUser(@RequestBody CreationDTO creationDTO, BindingResult result)
       throws ValidException {
 

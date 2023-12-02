@@ -21,3 +21,4 @@ server:
 
 urls:
   authApiAuthenticate: ${AUTH_API_AUTHENTICATE}
+  appUrl: ${APP_URL}

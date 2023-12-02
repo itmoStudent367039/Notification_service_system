@@ -1,6 +1,7 @@
 package ru.ifmo.authapi.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,6 +27,9 @@ import ru.ifmo.authapi.services.PersonDetailsService;
 public class SecurityConfig {
   private final PersonDetailsService service;
   private final JwtFilter filter;
+
+  @Value("${urls.appUrl}")
+  private String appUrl;
 
   @Autowired
   public SecurityConfig(PersonDetailsService service, JwtFilter filter) {
@@ -54,13 +58,12 @@ public class SecurityConfig {
         .authorizeHttpRequests(
             auth ->
                 auth.requestMatchers(
-                        HttpMethod.POST, "/auth/login", "/auth/registration", "/auth/resend-token")
+                        HttpMethod.POST, "/login", "/registration", "/resend-token")
                     .permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/auth/confirm/**"))
+                    .requestMatchers(new AntPathRequestMatcher("/confirm/**"))
                     .permitAll()
-                    // TODO: здесь опасно
-                    .requestMatchers(HttpMethod.GET, "/auth/authenticate")
-                    .authenticated()
+                    .requestMatchers(HttpMethod.GET, "/authenticate")
+                    .hasAnyRole("USER", "ADMIN")
                     .anyRequest()
                     .hasAnyRole("USER", "ADMIN"))
         .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
@@ -75,8 +78,7 @@ public class SecurityConfig {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);
-    // TODO: allow requests form nginx only
-    config.addAllowedOrigin("http://notification-system.com");
+    config.addAllowedOrigin(appUrl);
     config.addAllowedHeader("*");
     config.addAllowedMethod("*");
     source.registerCorsConfiguration("/**", config);

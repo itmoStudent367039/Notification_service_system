@@ -22,7 +22,6 @@ import ru.ifmo.authapi.util.exceptions.ValidException;
 import java.net.UnknownHostException;
 
 @Controller
-@RequestMapping("/auth")
 public class AuthenticationController {
   private final AuthenticationService authenticationService;
 

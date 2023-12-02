@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 import ru.ifmo.authapi.dto.RegistrationDTO;
 import ru.ifmo.authapi.responses.PersonView;
 
-
 @Component
 public class RequestDirector {
   @Value("${urls.userApiCreatePerson}")

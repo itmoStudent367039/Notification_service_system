@@ -9,7 +9,6 @@ import ru.ifmo.authapi.util.ObjectConverter;
 import ru.ifmo.authapi.util.validators.BindingChecker;
 import ru.ifmo.authapi.util.validators.DomainValidator;
 
-
 @Configuration
 public class AppConfig {
   @Bean
@@ -31,6 +30,7 @@ public class AppConfig {
   public RestTemplate restTemplate() {
     RestTemplate template = new RestTemplate();
     template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
     return template;
   }
 

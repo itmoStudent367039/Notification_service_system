@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${PG_DB_URL}
+    username: ${PG_DB_USERNAME}
+    password: ${PG_DB_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    generate-ddl: true
+    show-sql: true
+
+server:
+  port: ${SERVER_PORT}
+
+urls:
+  authApiAuthenticate: ${AUTH_API_AUTHENTICATE}

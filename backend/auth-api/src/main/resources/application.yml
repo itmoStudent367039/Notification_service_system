@@ -1,0 +1,54 @@
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${PG_DB_URL}
+    username: ${PG_DB_USERNAME}
+    password: ${PG_DB_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    generate-ddl: true
+    show-sql: true
+
+  mail:
+    host: ${EMAIL_SENDER_HOST}
+    port: ${EMAIL_SENDER_PORT}
+    username: ${EMAIL_SENDER_ID}
+    password: ${EMAIL_SENDER_PASSWORD}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        mime:
+          charset: UTF
+        smtp:
+          writetimeout: 10000
+          connectiontimeout: 10000
+          timeout: 10000
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    verify:
+      host: http://localhost:${SERVER_PORT}
+
+server:
+  port: ${SERVER_PORT}
+
+jwt:
+  jwtSecret: ${SECRET_WORD}
+  expirationConfirmTime: ${EXPIRATION_CONFIRM}
+  expirationUserTime: ${EXPIRATION_USER_TIME}
+  issuer: ${ISSUER}
+  subject: ${SUBJECT}
+  claimName: ${CLAIM_NAME}
+
+urls:
+  userApiCreatePerson: ${USER_API_CREATE_PERSON}
+  userApiGetPerson: ${USER_API_GET_PERSON}
+

@@ -1,0 +1,21 @@
+server {
+  listen 80;
+
+  server_name notification-system.com;
+
+  location / {
+    proxy_pass http://frontend:3000;
+    # Needed for sockets
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+  }
+
+  location /user-api {
+    proxy_pass http://user-api:3002;
+  }
+
+  location /auth {
+    proxy_pass http://auth-api:3001;
+  }
+}

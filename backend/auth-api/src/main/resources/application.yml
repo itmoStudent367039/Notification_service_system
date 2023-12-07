@@ -51,4 +51,5 @@ jwt:
 urls:
   userApiCreatePerson: ${USER_API_CREATE_PERSON}
   userApiGetPerson: ${USER_API_GET_PERSON}
+  appUrl: ${APP_URL}
 

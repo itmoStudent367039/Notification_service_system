@@ -11,11 +11,11 @@ server {
     proxy_set_header Connection "upgrade";
   }
 
-  location /user-api {
-    proxy_pass http://user-api:3002;
+  location /user-api/ {
+    proxy_pass http://user-api:3002/;
   }
 
-  location /auth {
-    proxy_pass http://auth-api:3001;
+  location /auth-api/ {
+    proxy_pass http://auth-api:3001/;
   }
 }

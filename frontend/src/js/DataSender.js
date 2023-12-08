@@ -35,7 +35,7 @@ export async function sendRequestSignUp(body){
       console.log(`Registration response from auth: ${response.status}`);
       console.log(response);
       if (!(response.ok)){
-          checkInputSignUp(response);
+          checkInputSignUp(response.json());
       }else{
           window.open("checkMail.html");
       }

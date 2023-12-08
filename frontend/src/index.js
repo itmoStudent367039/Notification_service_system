@@ -1,45 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+// import React from 'react';
+// import ReactDOM from 'react-dom/client';
+// import App from './js/App';
+import './css/StyleLogIn.css';
+import './js/FormSwitch';
+import './js/Initialization';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    <React.StrictMode>
-        <App/>
-    </React.StrictMode>
-);
+// const root = ReactDOM.createRoot(document.getElementById('appEmailLogIn'));
+// root.render(
+//     <App />
+// );
 
-(async () => {
-    // fetch("/auth-api/registration", {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json;charset=utf-8",
-    //     },
-    //     body: JSON.stringify({
-    //         username: "yestai",
-    //         password: "123",
-    //         email: "igor.abdullin.95@mail.ru",
-    //     }),
-    // }).then((response) => {
-    //     console.log(`Registration response from auth: ${response.status}`);
-    //     console.log(response);
-    // });
-
-    fetch("/auth-api/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({
-            password: "123",
-            email: "igor.abdullin.95@mail.ru",
-        }),
-    }).then((response) => {
-        console.log(`Login response from auth: ${response.status}`);
-        console.log(response);
-    });
-})();
-
-reportWebVitals();

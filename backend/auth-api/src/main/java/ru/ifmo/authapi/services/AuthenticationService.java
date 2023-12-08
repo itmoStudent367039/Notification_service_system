@@ -1,6 +1,10 @@
 package ru.ifmo.authapi.services;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import java.net.UnknownHostException;
+import java.time.ZonedDateTime;
+import java.util.Objects;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.mail.MailException;
@@ -30,13 +34,12 @@ import ru.ifmo.authapi.util.exceptions.ValidException;
 import ru.ifmo.authapi.util.validators.BindingChecker;
 import ru.ifmo.authapi.util.validators.DomainValidator;
 
-import java.net.UnknownHostException;
-import java.time.ZonedDateTime;
-import java.util.Objects;
-import java.util.Optional;
-
 @Service
 public class AuthenticationService {
+  private static final String SUCCESSFULLY_LOGIN = "successfully login";
+  private static final String SUCCESSFULLY_REGISTER = "successfully register";
+  private static final String SUCCESSFULLY_RESEND = "successfully resend a token";
+  private static final String UNKNOWN_USER = "User";
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
   private final RegistrationValidator registrationValidator;
@@ -47,11 +50,6 @@ public class AuthenticationService {
   private final EmailService emailService;
   private final DomainValidator domainValidator;
   private final RequestDirector requestDirector;
-
-  private static final String SUCCESSFULLY_LOGIN = "successfully login";
-  private static final String SUCCESSFULLY_REGISTER = "successfully register";
-  private static final String SUCCESSFULLY_RESEND = "successfully resend a token";
-  private static final String UNKNOWN_USER = "User";
 
   @Autowired
   public AuthenticationService(
@@ -78,11 +76,11 @@ public class AuthenticationService {
   }
 
   public ResponseEntity<?> register(RegistrationDTO registrationDTO, BindingResult bindingResult)
-      throws ValidException, MailException, UnknownHostException {
+      throws ValidException, MailException, UnknownHostException, IllegalArgumentException {
 
-    domainValidator.throwExceptionIfDomainNotExists(registrationDTO.getEmail());
     registrationValidator.validate(registrationDTO, bindingResult);
     checker.throwIfBindResultHasErrors(bindingResult);
+    domainValidator.throwExceptionIfDomainNotExists(registrationDTO.getEmail());
 
     Person converted = objectConverter.convertToObject(registrationDTO, Person.class);
     converted.setPassword(passwordEncoder.encode(converted.getPassword()));
@@ -108,9 +106,8 @@ public class AuthenticationService {
           .contentType(MediaType.APPLICATION_JSON)
           .body(errorResponse);
     } catch (MailException e) {
-// TODO: send delete request to user-api
+      // TODO: send delete request to user-api
       peopleService.delete(saved);
-
 
       return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
           .body(ErrorResponse.builder().timestamp(ZonedDateTime.now()).build());

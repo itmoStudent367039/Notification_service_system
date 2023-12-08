@@ -1,12 +1,15 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom/client';
-// import App from './js/App';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './js/components/App';
 import './css/StyleLogIn.css';
 import './js/FormSwitch';
 import './js/Initialization';
 
-// const root = ReactDOM.createRoot(document.getElementById('appEmailLogIn'));
-// root.render(
-//     <App />
-// );
+export function createErrorMessage(id, message){
+    const root = ReactDOM.createRoot(document.getElementById(id));
+    root.render(
+        <App message={message}/>
+    );
+}
+
 

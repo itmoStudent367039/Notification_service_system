@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 public class DomainValidator {
   public void throwExceptionIfDomainNotExists(String email)
-      throws UnknownHostException, DomainNotExists {
+      throws UnknownHostException, DomainNotExists, IllegalArgumentException {
     String[] parts = email.split("@");
 
     if (parts.length != 2) {

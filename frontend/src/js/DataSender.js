@@ -1,3 +1,4 @@
+import {checkInputLogIn, checkInputSignUp} from "./InputValidator";
 export async function sendRequestLogIn(body){
   fetch("/auth-api/login", {
     method: "POST",
@@ -11,6 +12,11 @@ export async function sendRequestLogIn(body){
   }).then((response) => {
     console.log(`Login response from auth: ${response.status}`);
     console.log(response);
+    if (!(response.ok)){
+        checkInputLogIn(response.json());
+    }else{
+        window.open("checkMail.html");
+    }
   });
 }
 
@@ -28,6 +34,11 @@ export async function sendRequestSignUp(body){
   }).then((response) => {
       console.log(`Registration response from auth: ${response.status}`);
       console.log(response);
+      if (!(response.ok)){
+          checkInputSignUp(response.json());
+      }else{
+          window.open("checkMail.html");
+      }
   });
 }
 

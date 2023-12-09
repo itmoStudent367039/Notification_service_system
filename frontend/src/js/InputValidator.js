@@ -1,33 +1,39 @@
-// // const btn1 = document.querySelector("#signUpBtn");
-// // const appId = "appNameSignUp";
-// // const errorMassage = "Username is not valid";
-// // btn1.addEventListener("click", isNotValid);
-// export function isNotValid(appId, errorMassage) {
-//   const App = ({ initText }) => {
-//     const [text] = React.useState(initText);
-//     return (
-//       <div className="app">
-//         <div>
-//           <i
-//             className="fa fa-exclamation-triangle"
-//             aria-hidden="true"
-//             style={{ color: "red", fontSize: "13px" }}
-//           ></i>
-//           <div
-//             style={{
-//               paddingLeft: "2rem",
-//               color: "red",
-//               fontSize: "small",
-//               paddingTop: "0.3rem",
-//             }}
-//           >
-//             {text}
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   };
-//   const container = document.getElementById(appId);
-//   const root = ReactDOM.createRoot(container);
-//   root.render(<App initText={errorMassage} />);
-// }
+import {createErrorMessage} from "../index";
+
+export function checkInputSignUp(response) {
+    response.then(result1 => {
+        const password = result1.message.password;
+        if (password) {
+            createErrorMessage("appPasswordSignUp", password);
+        }
+        const email = result1.message.email;
+        if (email){
+            createErrorMessage("appMailSignUp", email);
+        }
+        const username = result1.message.username;
+        if (username){
+            createErrorMessage("appNameSignUp", username);
+        }
+        const error = result1.message.error;
+        if (error){
+            createErrorMessage("appPasswordSignUp", error);
+        }
+    });
+}
+
+export function checkInputLogIn(response) {
+    response.then(result => {
+        const password = result.message.password;
+        if (password) {
+            createErrorMessage("appPasswordLogIn", password);
+        }
+        const email = result.message.email;
+        if (email){
+            createErrorMessage("appEmailLogIn", email);
+        }
+        const error = result.message.error;
+        if (error){
+            createErrorMessage("appPasswordLogIn", error);
+        }
+    });
+}

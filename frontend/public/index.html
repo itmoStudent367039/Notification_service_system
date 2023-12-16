@@ -1,127 +1,126 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>Notification System</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
-      rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+            rel="stylesheet"
     />
-    <link href="../src/css/StyleLogIn.css" rel="stylesheet" type="text/css" />
+    <link href="../src/css/StyleLogIn.css" rel="stylesheet" type="text/css"/>
     <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="shortcut icon" href="media/i.png" />
-  </head>
-  <body>
-    <div
-      class="container-login100"
-      style="background-image: url('media/bg-01.jpg')"
-    >
-      <div class="generalBlock" id="generalBlock">
+    <link rel="shortcut icon" href="media/i.png"/>
+</head>
+<body>
+<div
+        class="container-login100"
+        style="background-image: url('media/bg-01.jpg')"
+>
+    <div class="generalBlock" id="generalBlock">
         <label class="tab active" id="LogInTab">Log in</label>
         <label class="tab" id="SignUpTab">Sign up</label>
         <div class="tab-form active">
-          <div class="logo">
-            <img
-              class="imgLogo"
-              src="media/logo.png"
-              alt="Notification System"
-            />
-          </div>
-          <div class="registrationFields">
-            <label class="text-field__label" for="email1"
-              >Почта
-            </label>
-            <br />
-            <span class="text-field__icon input-item"
-            ><i class="fa fa-envelope-o"></i
-            ></span>
-            <input
-              class="text-field__input"
-              placeholder="Email"
-              type="text"
-              id="email1"
-            />
-            <div id="appEmailLogIn"></div>
-            <br />
-            <label class="text-field__label" for="password1">Пароль</label>
-            <br />
-            <span class="text-field__icon input-item"
-              ><i class="fa fa-key"></i
-            ></span>
-            <input
-              class="text-field__input"
-              placeholder="Password"
-              type="password"
-              id="password1"
-            />
-            <div id="appPasswordLogIn"></div>
-            <br />
-          </div>
-          <button class="btn-new btnLogIn" id="logInBtn">
-            <span>Log in</span>
-          </button>
+            <div class="logo">
+                <img
+                        class="imgLogo"
+                        src="media/logo.png"
+                        alt="Notification System"
+                />
+            </div>
+            <div class="registrationFields">
+                <label class="text-field__label" for="email1"
+                >Почта
+                </label>
+                <br/>
+                <span class="text-field__icon input-item"
+                ><i class="fa fa-envelope-o"></i
+                ></span>
+                <input
+                        class="text-field__input"
+                        placeholder="Email"
+                        type="text"
+                        id="email1"
+                />
+                <div id="appEmailLogIn"></div>
+                <br/>
+                <label class="text-field__label" for="password1">Пароль</label>
+                <br/>
+                <span class="text-field__icon input-item"
+                ><i class="fa fa-key"></i
+                ></span>
+                <input
+                        class="text-field__input"
+                        placeholder="Password"
+                        type="password"
+                        id="password1"
+                />
+                <div id="appPasswordLogIn"></div>
+                <br/>
+            </div>
+            <button class="btn-new btnLogIn" id="logInBtn">
+                <span>Log in</span>
+            </button>
         </div>
 
         <div class="tab-form">
-          <div class="logo">
-            <img
-              class="imgLogo"
-              src="media/logo.png"
-              alt="Notification System"
-            />
-          </div>
-          <div class="registrationFields">
-            <label class="text-field__label" for="username2"
-              >Имя пользователя
-            </label>
-            <br />
-            <span class="text-field__icon input-item"
-              ><i class="fa fa-user-circle"></i
-            ></span>
-            <input
-              class="text-field__input"
-              placeholder="Username"
-              type="text"
-              id="username2"
-            />
-            <div id="appNameSignUp"></div>
-            <br />
-            <label class="text-field__label" for="mail">Почта</label>
-            <br />
-            <span class="text-field__icon input-item"
-              ><i class="fa fa-envelope-o"></i
-            ></span>
-            <input
-              class="text-field__input"
-              placeholder="Mail"
-              type="text"
-              id="mail"
-            />
-            <div id="appMailSignUp"></div>
-            <br />
-            <label class="text-field__label" for="password2">Пароль</label>
-            <br />
-            <span class="text-field__icon input-item"
-              ><i class="fa fa-key"></i
-            ></span>
-            <input
-              class="text-field__input"
-              placeholder="Password"
-              type="password"
-              id="password2"
-            />
-            <div id="appPasswordSignUp"></div>
-            <br />
-          </div>
-          <button class="btn-new btnSignUp" id="signUpBtn">
-            <span>Sign up</span>
-          </button>
+            <div class="logo">
+                <img
+                        class="imgLogo"
+                        src="media/logo.png"
+                        alt="Notification System"
+                />
+            </div>
+            <div class="registrationFields">
+                <label class="text-field__label" for="username2"
+                >Имя пользователя
+                </label>
+                <br/>
+                <span class="text-field__icon input-item"
+                ><i class="fa fa-user-circle"></i
+                ></span>
+                <input
+                        class="text-field__input"
+                        placeholder="Username"
+                        type="text"
+                        id="username2"
+                />
+                <div id="appNameSignUp"></div>
+                <br/>
+                <label class="text-field__label" for="mail">Почта</label>
+                <br/>
+                <span class="text-field__icon input-item"
+                ><i class="fa fa-envelope-o"></i
+                ></span>
+                <input
+                        class="text-field__input"
+                        placeholder="Mail"
+                        type="text"
+                        id="mail"
+                />
+                <div id="appMailSignUp"></div>
+                <br/>
+                <label class="text-field__label" for="password2">Пароль</label>
+                <br/>
+                <span class="text-field__icon input-item"
+                ><i class="fa fa-key"></i
+                ></span>
+                <input
+                        class="text-field__input"
+                        placeholder="Password"
+                        type="password"
+                        id="password2"
+                />
+                <div id="appPasswordSignUp"></div>
+                <br/>
+            </div>
+            <button class="btn-new btnSignUp" id="signUpBtn">
+                <span>Sign up</span>
+            </button>
         </div>
-      </div>
     </div>
-  </body>
+</div>
+</body>
 </html>

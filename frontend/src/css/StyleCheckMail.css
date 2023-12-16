@@ -42,9 +42,6 @@ IMG.imgLogo {
 }
 
 .message {
-  margin-top: 0%;
-  margin-left: 100px;
-  margin-right: 100px;
-  margin-bottom: 3rem;
+  margin: 0% 100px 3rem;
 }
 

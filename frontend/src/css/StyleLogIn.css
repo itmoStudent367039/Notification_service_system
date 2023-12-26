@@ -27,6 +27,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   vertical-align: top;
   font-family: inherit;
+  margin-bottom: 1rem;
 }
 
 IMG.imgLogo {
@@ -147,7 +148,6 @@ button {
   width: 250px;
   height: 50px;
   line-height: 50px;
-  font-weight: 500px;
   text-decoration: none;
   text-align: center;
   color: #fff;

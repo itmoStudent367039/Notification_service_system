@@ -19,6 +19,14 @@ spring:
 server:
   port: ${SERVER_PORT}
 
+jwt:
+  jwtSecret: ${SECRET_WORD}
+  expirationUserTime: ${EXPIRATION_USER_TIME}
+  issuer: ${ISSUER}
+  subject: ${SUBJECT}
+  claimName: ${CLAIM_NAME}
+
 urls:
   authApiAuthenticate: ${AUTH_API_AUTHENTICATE}
   appUrl: ${APP_URL}
+  authApiDeleteUser: ${AUTH_API_DELETE}

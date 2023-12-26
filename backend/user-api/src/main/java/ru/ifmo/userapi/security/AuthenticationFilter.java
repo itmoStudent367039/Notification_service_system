@@ -86,5 +86,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             Collections.singletonList(new SimpleGrantedAuthority(userInfo.getRole())));
 
     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    System.out.println("set authentication!");
   }
 }

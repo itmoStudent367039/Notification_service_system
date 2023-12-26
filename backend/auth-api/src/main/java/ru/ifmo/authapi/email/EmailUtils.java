@@ -10,7 +10,7 @@ public class EmailUtils {
         + "\n\n® Notification Service System";
   }
 
-  public static String getVerificationUrl(String host, String token) {
+  private static String getVerificationUrl(String host, String token) {
     return host + "/confirm?token=" + token;
   }
 }

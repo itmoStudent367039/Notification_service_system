@@ -1,6 +1,4 @@
-package ru.ifmo.authapi.util.validators;
-
-import ru.ifmo.authapi.util.exceptions.DomainNotExists;
+package ru.ifmo.mailsender.validators;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

@@ -19,16 +19,19 @@ public class PeopleController {
     this.service = service;
   }
 
-  @PostMapping()
+  @PostMapping
   public ResponseEntity<Void> createUser(@RequestBody CreationDTO creationDTO, BindingResult result)
       throws ValidException {
-
     return service.createUser(creationDTO, result);
   }
 
-  @GetMapping()
+  @GetMapping
   public ResponseEntity<PersonView> getCurrentPerson() {
-
     return service.getCurrentPerson();
+  }
+
+  @DeleteMapping
+  public ResponseEntity<Void> deleteUser() {
+    return service.deleteUser();
   }
 }

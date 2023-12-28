@@ -6,8 +6,6 @@ import './js/FormSwitch';
 import './js/Initialization';
 import ErrorMessage from "./js/components/ErrorMessage";
 import {Router} from "./js/Router";
-import CheckMailPage from "./js/pages/CheckMailPage";
-import {UserAccountPage} from "./js/pages/UserAccountPage";
 
 // export function createApp(){
 //     const root = ReactDOM.createRoot(document.getElementById(""));
@@ -27,13 +25,6 @@ export function createErrorMessage(id, message) {
     const root = ReactDOM.createRoot(document.getElementById(id));
     root.render(
         <ErrorMessage message={message}/>
-    );
-}
-
-export function createCheckMailPage() {
-    const root = ReactDOM.createRoot(document.getElementById("generalBlock"));
-    root.render(
-        <CheckMailPage/>
     );
 }
 

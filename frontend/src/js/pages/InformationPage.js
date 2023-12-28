@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 
-export function UserAccountPage() {
+export function InformationPage() {
     const nav = useNavigate();
     return (
         <div>
@@ -17,28 +17,26 @@ export function UserAccountPage() {
                 minHeight: "300px",
             }}>
                 <button onClick={() => nav('/')} className="btn-new btnLogIn">Log out</button>
-                <button onClick={() => nav('/info')} className="btn-new btnLogIn">Information</button>
                 <button onClick={() => nav('/account')} className="btn-new btnLogIn">Account</button>
                 <button onClick={() => nav('/subscribe')} className="btn-new btnLogIn">Subscribe</button>
                 <div className="logo">
-                <img
-                    className="imgLogo"
-                    src="media/logo.png"
-                    alt="Notification System"
-                    style={{
-                        marginTop: "2rem",
-                        width: "50%",
-                        display: "block",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        background: "#ffffff",
-                        borderRadius: "5px",
-                        padding: "2%",
-                    }}
-                />
+                    <img
+                        className="imgLogo"
+                        src="media/logo.png"
+                        alt="Notification System"
+                        style={{
+                            marginTop: "2rem",
+                            width: "50%",
+                            display: "block",
+                            marginLeft: "auto",
+                            marginRight: "auto",
+                            background: "#ffffff",
+                            borderRadius: "5px",
+                            padding: "2%",
+                        }}
+                    />
+                </div>
+                <p>мы такие крутые, посылаем вам уведомления, но для этого вам надо сделать следующее: 1.2.3...</p>
             </div>
-                <p>Добро пожаловать!</p>
-            </div>
-        </div>
-    )
+        </div>);
 }

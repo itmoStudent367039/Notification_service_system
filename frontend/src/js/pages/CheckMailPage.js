@@ -1,7 +1,6 @@
 import {useNavigate} from "react-router-dom";
 
 function CheckMailPage() {
-    const nav = useNavigate();
 
     return (<div><div className="generalBlock" id="generalBlock" style={{
             width: "70%",
@@ -12,7 +11,7 @@ function CheckMailPage() {
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
             verticalAlign: "top",
             fontFamily: "inherit",
-            minHeight: "275px",
+            minHeight: "250px",
         }}>
             <div className="logo">
                 <img
@@ -43,7 +42,6 @@ function CheckMailPage() {
                     specified mail and follow the link in the letter from Notification
                     System.
                 </p>
-                <button className="btn-new btnLogIn" onClick={()=>nav('/')}>Back</button>
             </div>
         </div>
     </div>

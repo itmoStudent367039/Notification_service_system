@@ -2,6 +2,9 @@ spring:
   profiles:
     active: ${ACTIVE_PROFILE:dev}
 
+  thymeleaf:
+    check-template-location: false
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${PG_DB_URL}
@@ -15,6 +18,9 @@ spring:
         format_sql: true
     generate-ddl: true
     show-sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    client-id: 'demo-producer'
 
 server:
   port: ${SERVER_PORT}

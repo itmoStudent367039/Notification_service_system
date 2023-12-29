@@ -1,5 +1,5 @@
 import {checkInputLogIn, checkInputSignUp} from "./InputValidator";
-import {createCorrectInput} from "../index";
+import { createCorrectInput} from "../index";
 export async function sendRequestLogIn(body){
   fetch("/auth-api/login", {
     method: "POST",
@@ -18,7 +18,7 @@ export async function sendRequestLogIn(body){
     }else{
         createCorrectInput("appPasswordLogIn");
         createCorrectInput("appEmailLogIn");
-        window.open("checkMail.html");
+        window.open("/userAccount")
     }
   });
 }
@@ -43,7 +43,7 @@ export async function sendRequestSignUp(body){
           createCorrectInput("appPasswordSignUp");
           createCorrectInput("appMailSignUp");
           createCorrectInput("appNameSignUp");
-          window.open("checkMail.html");
+          window.open("/checkMailPage")
       }
   });
 }

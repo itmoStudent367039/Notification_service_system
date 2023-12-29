@@ -2,12 +2,11 @@ package ru.ifmo.userapi.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,14 +21,16 @@ import org.springframework.web.client.RestTemplate;
 import ru.ifmo.userapi.models.Notice;
 import ru.ifmo.userapi.services.DataSender;
 import ru.ifmo.userapi.services.DataSenderKafka;
-import ru.ifmo.userapi.services.NoticeSource;
 
 @Configuration
+@Slf4j
 public class AppConfig {
-  private static final Logger log = LoggerFactory.getLogger(AppConfig.class);
 
   @Value("${spring.kafka.bootstrap-servers}")
   private String bootstrapAddress;
+
+  @Value("${application.kafka.topic-name}")
+  private String topicName;
 
   @Bean
   public ModelMapper modelMapper() {
@@ -55,8 +56,6 @@ public class AppConfig {
     configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
-    //  configProps.put(ProducerConfig.CLIENT_ID_CONFIG, clientId);
-
     var kafkaProducerFactory = new DefaultKafkaProducerFactory<String, Notice>(configProps);
     kafkaProducerFactory.setValueSerializer(new JsonSerializer<>(mapper));
 
@@ -71,17 +70,12 @@ public class AppConfig {
 
   @Bean
   public NewTopic topic() {
-    return TopicBuilder.name("topicName").partitions(1).replicas(1).build();
+    return TopicBuilder.name(topicName).partitions(1).replicas(1).build();
   }
 
   @Bean
   public DataSender dataSender(NewTopic topic, KafkaTemplate<String, Notice> kafkaTemplate) {
     return new DataSenderKafka(
         topic.name(), kafkaTemplate, notice -> log.info("asked, value:{}", notice));
-  }
-
-  @Bean
-  public NoticeSource stringValueSource(DataSender dataSender) {
-    return new NoticeSource(dataSender);
   }
 }

@@ -1,6 +1,8 @@
 package ru.ifmo.userapi.services;
 
+import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import ru.ifmo.userapi.validators.CreationValidator;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class PeopleService {
   private final ObjectConverter converter;
   private final PeopleRepository repository;
@@ -80,29 +83,29 @@ public class PeopleService {
     String email = (String) authentication.getPrincipal();
 
     Optional<Person> optional = repository.findByEmail(email);
-    System.out.println("Begin method 'deleteUser'");
-    System.out.println("Current email - " + email);
-    System.out.println("Find user by email");
-    System.out.println(optional.isPresent() ? optional.get() : "can not find user with this email");
+
+    log.info(String.format("Try to find user by email: %s", email));
+
+    log.info(optional.map(String.class::cast).orElse("can not find user with this email"));
 
     try {
-      System.out.println("Try send delete request to auth-api");
       String jwtToken = jwtUtil.generateTokenWithCommonUserTime(email);
       this.requestDirector.sendAuthApiDeleteRequest(jwtToken);
       optional.ifPresent(this.repository::delete);
-      System.out.println("User was deleted (auth-api, user-api)");
+      log.info(String.format("Invoke method delete (repository) with email %s", email));
     } catch (HttpClientErrorException e) {
+      log.warn(
+          String.format(
+              "Catch error while sending delete request to auth-api with code: %s; text: %s",
+              e.getStatusCode(), e.getMessage()));
+      log.warn("User wasn't deleted");
       return ResponseEntity.status(e.getStatusCode()).build();
     }
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  //  public Optional<Person> findByUsername(String username) {
-  //    return repository.findByUsername(username);
-  //  }
-  //
-  //  public Optional<Person> findByEmail(String email) {
-  //    return repository.findByEmail(email);
-  //  }
+  public List<Person> getPeople() {
+    return repository.findAll();
+  }
 }

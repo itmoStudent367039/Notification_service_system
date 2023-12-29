@@ -1,5 +1,6 @@
 package ru.ifmo.mailsender.email;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ru.ifmo.mailsender.models.Mail;
 
 @Service
+@Slf4j
 public class SimpleEmailSender implements EmailSender {
   private final JavaMailSender emailSender;
 
@@ -31,5 +33,6 @@ public class SimpleEmailSender implements EmailSender {
     message.setTo(mail.getTo());
     message.setText(mail.getMessage());
     emailSender.send(message);
+    log.info(String.format("Send email to - %s", mail.getTo()));
   }
 }

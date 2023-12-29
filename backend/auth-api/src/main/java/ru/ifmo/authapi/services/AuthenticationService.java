@@ -4,6 +4,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -34,6 +35,7 @@ import ru.ifmo.authapi.util.exceptions.ValidException;
 import ru.ifmo.authapi.util.validators.BindingChecker;
 
 @Service
+@Slf4j
 public class AuthenticationService {
   private static final String SUCCESSFULLY_LOGIN = "successfully login";
   private static final String SUCCESSFULLY_REGISTER = "successfully register";
@@ -84,8 +86,12 @@ public class AuthenticationService {
     try {
       requestDirector.sendUserApiCreationRequest(registrationDTO, token);
     } catch (HttpClientErrorException e) {
-      System.out.println("auth: (5) bad creation response from user api - " + e.getStatusCode());
+      log.error(
+          String.format(
+              "(Registration) Catch exception while sending creation request to user-api: code - %s; message - %s",
+              e.getStatusCode(), e.getMessage()));
       peopleService.delete(saved);
+      log.warn("Delete user with email: " + registrationDTO.getEmail());
       return this.extractResponseFromException(e);
     }
 
@@ -93,11 +99,16 @@ public class AuthenticationService {
       this.sendMessageToMailService(
           registrationDTO.getUsername(), registrationDTO.getEmail(), token);
     } catch (HttpClientErrorException e) {
-      System.out.println("auth: (5) bad response from mail service - " + e.getStatusCode());
+      log.error(
+          String.format(
+              "(Registration) Catch exception while sending request to mail-sender: code - %s; message - %s",
+              e.getStatusCode(), e.getMessage()));
+      log.warn("(Registration) Send delete request to user-api: " + registrationDTO.getEmail());
       requestDirector.sendUserApiDeleteRequest(token);
-      // TODO: not to delete user (user-api sends a delete request to auth-api service)
       return this.extractResponseFromException(e);
     }
+    log.info(
+        String.format("(Registration) Successfully register user with email - %s", registrationDTO.getEmail()));
 
     return ResponseEntity.status(HttpStatus.CREATED)
         .contentType(MediaType.APPLICATION_JSON)
@@ -110,18 +121,20 @@ public class AuthenticationService {
 
   public ResponseEntity<?> login(LoginDTO loginDTO, BindingResult bindingResult)
       throws ValidException {
-    System.out.println("Auth-api: start login method");
     checker.throwIfBindResultHasErrors(bindingResult);
 
     Person person = this.authenticateAndReturnUser(loginDTO);
     String token = jwtUtil.generateTokenWithCommonUserTime(person.getEmail());
 
-    System.out.println("Auth-api: success authentication - " + person.getEmail());
+    log.info(String.format("(Login) Success authentication - %s", person.getEmail()));
 
     try {
-      System.out.println("Auth-api: send get current person request");
       return this.getCurrentUserFromUserServiceAndFormResponse(token);
     } catch (HttpClientErrorException e) {
+      log.error(
+          String.format(
+              "(Login) Catch exception while sending request to user-api (get current user): code - %s; message - %s",
+              e.getStatusCode(), e.getMessage()));
       return this.extractResponseFromException(e);
     }
   }
@@ -161,7 +174,10 @@ public class AuthenticationService {
                   .message(SUCCESSFULLY_RESEND)
                   .build());
     } catch (HttpClientErrorException e) {
-      System.out.println("auth: (custom) bad - " + e.getStatusCode());
+      log.error(
+          String.format(
+              "(ResendConfirmToken) Catch exception while sending request to mail-sender: code - %s; message - %s",
+              e.getStatusCode(), e.getMessage()));
       return this.extractResponseFromException(e);
     }
   }
@@ -169,7 +185,8 @@ public class AuthenticationService {
   public ResponseEntity<UserInfo> authenticatePerson() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     PersonDetails details = (PersonDetails) authentication.getPrincipal();
-    System.out.println("auth: 3 point - receive from user: " + details.getUsername());
+    log.info(
+        String.format("(AuthenticatePerson) Successfully authentication, email - %s", details.getPerson().getEmail()));
 
     return ResponseEntity.ok(
         UserInfo.builder()
@@ -184,6 +201,7 @@ public class AuthenticationService {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     PersonDetails details = (PersonDetails) authentication.getPrincipal();
     this.peopleService.delete(details.getPerson());
+    log.info(String.format("(DeleteUser) Delete user with email: %s", details.getPerson().getEmail()));
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 

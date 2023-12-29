@@ -19,8 +19,8 @@ spring:
     generate-ddl: true
     show-sql: true
   kafka:
-    bootstrap-servers: localhost:9092
-    client-id: 'demo-producer'
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    client-id: ${KAFKA_CLIENT_ID}
 
 server:
   port: ${SERVER_PORT}
@@ -36,3 +36,7 @@ urls:
   authApiAuthenticate: ${AUTH_API_AUTHENTICATE}
   appUrl: ${APP_URL}
   authApiDeleteUser: ${AUTH_API_DELETE}
+
+application:
+  kafka:
+    topic-name: topicName

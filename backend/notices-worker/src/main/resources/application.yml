@@ -1,1 +1,17 @@
-
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID}
+db:
+  postgres:
+    driver: ${DB_DRIVER}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+application:
+  kafka:
+    topic:
+      name: ${KAFKA_TOPIC_NAME}
+  urls:
+    mail-service: ${MAIL_SERVICE_URL}

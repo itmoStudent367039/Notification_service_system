@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.ifmo.userapi.models.Notice;
 import ru.ifmo.userapi.services.DataSender;
 import ru.ifmo.userapi.services.DataSenderKafka;
+import ru.ifmo.userapi.services.NoticesService;
 
 @Configuration
 @Slf4j
@@ -58,7 +59,6 @@ public class AppConfig {
 
     var kafkaProducerFactory = new DefaultKafkaProducerFactory<String, Notice>(configProps);
     kafkaProducerFactory.setValueSerializer(new JsonSerializer<>(mapper));
-
     return kafkaProducerFactory;
   }
 
@@ -74,8 +74,8 @@ public class AppConfig {
   }
 
   @Bean
-  public DataSender dataSender(NewTopic topic, KafkaTemplate<String, Notice> kafkaTemplate) {
-    return new DataSenderKafka(
-        topic.name(), kafkaTemplate, notice -> log.info("asked, value:{}", notice));
+  public DataSender dataSender(
+      NewTopic topic, KafkaTemplate<String, Notice> kafkaTemplate, NoticesService noticesService) {
+    return new DataSenderKafka(kafkaTemplate, noticesService, topic.name());
   }
 }

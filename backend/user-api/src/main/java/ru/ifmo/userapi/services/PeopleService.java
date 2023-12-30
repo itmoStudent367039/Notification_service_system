@@ -2,6 +2,8 @@ package ru.ifmo.userapi.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -107,5 +109,11 @@ public class PeopleService {
 
   public List<Person> getPeople() {
     return repository.findAll();
+  }
+
+  public List<Person> getPeopleExceptOne(String email) {
+    return getPeople().parallelStream()
+        .filter(person -> !email.equals(person.getEmail()))
+        .collect(Collectors.toList());
   }
 }

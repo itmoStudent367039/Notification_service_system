@@ -2,31 +2,107 @@ package ru.ifmo.noticesworker.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.StringSerializer;
+import javax.sql.DataSource;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.KafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.JacksonUtils;
-import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.ifmo.noticesworker.model.Notice;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.web.client.RestTemplate;
+import ru.ifmo.noticesworker.models.Notice;
+import ru.ifmo.noticesworker.send.CustomNoticeSender;
+import ru.ifmo.noticesworker.send.NoticeSender;
+import ru.ifmo.noticesworker.send.RequestDirector;
 
 @Configuration
 public class AppConfig {
+  @Value("${spring.kafka.bootstrap-servers}")
+  private String bootstrapAddress;
+
+  @Value("${db.postgres.driver}")
+  private String driverClassName;
+
+  @Value("${db.postgres.url}")
+  private String dbUrl;
+
+  @Value("${db.postgres.username}")
+  private String username;
+
+  @Value("${db.postgres.password}")
+  private String password;
+
+  @Value("${spring.kafka.consumer.group-id}")
+  private String groupId;
+
   @Bean
   public ObjectMapper objectMapper() {
     return JacksonUtils.enhancedObjectMapper();
   }
 
   @Bean
-  public ProducerFactory<String, Notice> producerFactory(ObjectMapper mapper) {
-    var configProps = new HashMap<String, Object>();
-    configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-    configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-    var kafkaProducerFactory = new DefaultKafkaProducerFactory<String, Notice>(configProps);
-    kafkaProducerFactory.setValueSerializer(new JsonSerializer<>(mapper));
+  public ConsumerFactory<String, Notice> consumerFactory(ObjectMapper objectMapper) {
+    var props = new HashMap<String, Object>();
 
+    JsonDeserializer<Notice> deserializer = new JsonDeserializer<>(objectMapper);
+
+    deserializer.addTrustedPackages("*");
+    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, deserializer);
+    props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+
+    //  props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+    var kafkaProducerFactory = new DefaultKafkaConsumerFactory<String, Notice>(props);
+    kafkaProducerFactory.setValueDeserializer(deserializer);
     return kafkaProducerFactory;
+  }
+
+  @Bean
+  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Notice>>
+      kafkaListenerContainerFactory(ObjectMapper objectMapper) {
+    ConcurrentKafkaListenerContainerFactory<String, Notice> factory =
+        new ConcurrentKafkaListenerContainerFactory<>();
+    factory.setConsumerFactory(consumerFactory(objectMapper));
+    return factory;
+  }
+
+  @Bean
+  public DataSource dataSource() {
+    DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+    dataSource.setDriverClassName(driverClassName);
+    dataSource.setUrl(dbUrl);
+    dataSource.setUsername(username);
+    dataSource.setPassword(password);
+
+    return dataSource;
+  }
+
+  @Bean
+  public RequestDirector requestDirector(RestTemplate template) {
+    return new RequestDirector(template);
+  }
+
+  @Bean
+  public NoticeSender noticeSender(RequestDirector requestDirector) {
+    return new CustomNoticeSender(requestDirector);
+  }
+
+  @Bean
+  public RestTemplate restTemplate() {
+    RestTemplate template = new RestTemplate();
+    template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+    return template;
   }
 }

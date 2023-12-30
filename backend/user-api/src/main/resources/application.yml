@@ -39,4 +39,4 @@ urls:
 
 application:
   kafka:
-    topic-name: topicName
+    topic-name: ${KAFKA_TOPIC_NAME}

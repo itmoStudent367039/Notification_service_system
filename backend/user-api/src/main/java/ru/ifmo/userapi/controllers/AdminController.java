@@ -12,7 +12,7 @@ public class AdminController {
   private final AdminService adminService;
 
   @PostMapping
-  public ResponseEntity<?> notifyUsers(@RequestBody String message) {
+  public ResponseEntity<?> notifyUsers(@RequestParam String message) {
     adminService.notifyUsers(message);
     return ResponseEntity.ok().build();
   }

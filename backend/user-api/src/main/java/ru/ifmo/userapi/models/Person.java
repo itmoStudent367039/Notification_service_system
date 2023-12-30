@@ -36,4 +36,7 @@ public class Person {
 
   @Column(unique = true)
   private Integer vkId;
+
+  @OneToOne(mappedBy = "person")
+  private Notice notice;
 }

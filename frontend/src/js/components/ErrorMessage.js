@@ -1,6 +1,4 @@
-import './css/App.css';
-
-function App({message}) {
+function ErrorMessage({message}){
     return (
         <div>
             <div className="app">
@@ -23,8 +21,6 @@ function App({message}) {
                 </div>
             </div>
         </div>
-
     );
 }
-
-export default App;
+export default ErrorMessage;

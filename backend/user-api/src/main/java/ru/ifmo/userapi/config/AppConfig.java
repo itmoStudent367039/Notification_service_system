@@ -18,7 +18,7 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.JacksonUtils;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.web.client.RestTemplate;
-import ru.ifmo.userapi.models.Notice;
+import ru.ifmo.common.models.Notice;
 import ru.ifmo.userapi.services.DataSender;
 import ru.ifmo.userapi.services.DataSenderKafka;
 import ru.ifmo.userapi.services.NoticesService;

@@ -3,8 +3,8 @@ package ru.ifmo.userapi.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.ifmo.userapi.models.Notice;
-import ru.ifmo.userapi.repositories.NoticeRepository;
+import ru.ifmo.common.models.Notice;
+import ru.ifmo.common.repositories.NoticeRepository;
 
 @Service
 @RequiredArgsConstructor

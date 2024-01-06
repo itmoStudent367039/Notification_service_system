@@ -1,4 +1,4 @@
-package ru.ifmo.noticesworker.models;
+package ru.ifmo.common.models;
 
 public enum NoticeState {
   PREPARE,

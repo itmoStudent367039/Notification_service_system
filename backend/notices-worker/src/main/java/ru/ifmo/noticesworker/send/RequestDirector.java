@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import ru.ifmo.noticesworker.models.Notice;
+import ru.ifmo.common.models.Notice;
 
 @RequiredArgsConstructor
 public class RequestDirector {

@@ -1,4 +1,4 @@
-package ru.ifmo.userapi.models;
+package ru.ifmo.common.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

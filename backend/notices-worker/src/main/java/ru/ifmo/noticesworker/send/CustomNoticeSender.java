@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
-import ru.ifmo.noticesworker.models.Notice;
-import ru.ifmo.noticesworker.models.NoticeState;
+import ru.ifmo.common.models.Notice;
+import ru.ifmo.common.models.NoticeState;
 
 @RequiredArgsConstructor
 @Slf4j

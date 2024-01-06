@@ -7,13 +7,13 @@ import ru.ifmo.mailsender.validators.DomainValidator;
 
 @Configuration
 public class AppConfig {
-  @Bean
-  public BindingChecker bindingChecker() {
-    return new BindingChecker();
-  }
+    @Bean
+    public BindingChecker bindingChecker() {
+        return new BindingChecker();
+    }
 
-  @Bean
-  public DomainValidator domainValidator() {
-    return new DomainValidator();
-  }
+    @Bean
+    public DomainValidator domainValidator() {
+        return new DomainValidator();
+    }
 }

@@ -3,8 +3,8 @@ package ru.ifmo.userapi.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
-import ru.ifmo.userapi.models.Notice;
-import ru.ifmo.userapi.models.NoticeState;
+import ru.ifmo.common.models.Notice;
+import ru.ifmo.common.models.NoticeState;
 
 @Slf4j
 @RequiredArgsConstructor

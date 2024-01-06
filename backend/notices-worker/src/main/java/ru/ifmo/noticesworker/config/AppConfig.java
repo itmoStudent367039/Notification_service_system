@@ -2,14 +2,12 @@ package ru.ifmo.noticesworker.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
-import javax.sql.DataSource;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -18,7 +16,7 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.JacksonUtils;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.web.client.RestTemplate;
-import ru.ifmo.noticesworker.models.Notice;
+import ru.ifmo.common.models.Notice;
 import ru.ifmo.noticesworker.send.CustomNoticeSender;
 import ru.ifmo.noticesworker.send.NoticeSender;
 import ru.ifmo.noticesworker.send.RequestDirector;
@@ -27,18 +25,6 @@ import ru.ifmo.noticesworker.send.RequestDirector;
 public class AppConfig {
   @Value("${spring.kafka.bootstrap-servers}")
   private String bootstrapAddress;
-
-  @Value("${db.postgres.driver}")
-  private String driverClassName;
-
-  @Value("${db.postgres.url}")
-  private String dbUrl;
-
-  @Value("${db.postgres.username}")
-  private String username;
-
-  @Value("${db.postgres.password}")
-  private String password;
 
   @Value("${spring.kafka.consumer.group-id}")
   private String groupId;
@@ -74,18 +60,6 @@ public class AppConfig {
         new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory(objectMapper));
     return factory;
-  }
-
-  @Bean
-  public DataSource dataSource() {
-    DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-    dataSource.setDriverClassName(driverClassName);
-    dataSource.setUrl(dbUrl);
-    dataSource.setUsername(username);
-    dataSource.setPassword(password);
-
-    return dataSource;
   }
 
   @Bean

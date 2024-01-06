@@ -12,5 +12,5 @@ import java.time.ZonedDateTime;
 public class HttpResponse {
   private ZonedDateTime timestamp;
   private String message;
-  private PersonView personView;
+  private PersonView data;
 }

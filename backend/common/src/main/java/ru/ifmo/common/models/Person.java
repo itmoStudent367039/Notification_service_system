@@ -1,4 +1,4 @@
-package ru.ifmo.userapi.models;
+package ru.ifmo.common.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -36,4 +36,7 @@ public class Person {
 
   @Column(unique = true)
   private Integer vkId;
+
+  @OneToOne(mappedBy = "person")
+  private Notice notice;
 }

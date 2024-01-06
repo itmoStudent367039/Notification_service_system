@@ -1,4 +1,6 @@
 rootProject.name = 'backend'
-
 include 'auth-api'
+include 'mail-sender'
+include 'notices-worker'
 include 'user-api'
+include 'common'

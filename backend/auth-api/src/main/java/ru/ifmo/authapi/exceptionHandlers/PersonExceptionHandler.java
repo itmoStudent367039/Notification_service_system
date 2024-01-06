@@ -1,10 +1,11 @@
 package ru.ifmo.authapi.exceptionHandlers;
 
-import java.net.UnknownHostException;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,13 +14,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.ifmo.authapi.responses.ErrorResponse;
-import ru.ifmo.authapi.util.exceptions.DomainNotExists;
 import ru.ifmo.authapi.util.exceptions.ValidException;
 
 @RestControllerAdvice
+@Slf4j
 public class PersonExceptionHandler {
   public static final String MESSAGE_FIELD_NAME = "error";
-  private static final String FIELD_EMAIL_STRING = "email";
 
   @ExceptionHandler
   private ResponseEntity<ErrorResponse> handleException(ValidException e) {
@@ -33,57 +33,35 @@ public class PersonExceptionHandler {
               String message = error.getDefaultMessage();
               errors.put(field, message);
             });
+    log.error(String.format("(PersonExceptionHandler) Catch errors - %s", errors));
 
     var response = new ErrorResponse(errors, ZonedDateTime.now());
 
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
-  // TODO: Rest Template exc
-  //  @ExceptionHandler
-  //  private ResponseEntity<String> handleException(HttpClientErrorException e) {
-  //    return ResponseEntity.status(e.getStatusCode())
-  //        .contentType(MediaType.APPLICATION_JSON)
-  //        .body(e.getResponseBodyAsString());
-  //  }
-
   @ExceptionHandler
   private ResponseEntity<ErrorResponse> handleException(BadCredentialsException e) {
-    return this.createSingletonErrorResponse(
-        MESSAGE_FIELD_NAME, e.getMessage(), HttpStatus.UNAUTHORIZED);
-  }
-
-  @ExceptionHandler
-  private ResponseEntity<ErrorResponse> handleException(DomainNotExists e) {
-    return this.createSingletonErrorResponse(
-        FIELD_EMAIL_STRING, e.getMessage(), HttpStatus.BAD_REQUEST);
-  }
-
-  @ExceptionHandler
-  private ResponseEntity<ErrorResponse> handleException(IllegalArgumentException e) {
-    return this.createSingletonErrorResponse(
-        FIELD_EMAIL_STRING, e.getMessage(), HttpStatus.BAD_REQUEST);
-  }
-
-  @ExceptionHandler
-  private ResponseEntity<ErrorResponse> handleException(UnknownHostException e) {
-    return this.createSingletonErrorResponse(
-        FIELD_EMAIL_STRING, e.getMessage(), HttpStatus.BAD_REQUEST);
+    return this.createSingletonErrorResponse(e.getMessage());
   }
 
   // TODO: Что это?
   @ExceptionHandler({MethodArgumentTypeMismatchException.class})
   private ResponseEntity<ErrorResponse> handleException() {
+    log.error("(PersonExceptionHandler) Catch error - MethodArgumentTypeMismatchException");
     var response =
         new ErrorResponse(Collections.singletonMap(MESSAGE_FIELD_NAME, "id"), ZonedDateTime.now());
 
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
-  private ResponseEntity<ErrorResponse> createSingletonErrorResponse(
-      String key, String message, HttpStatus status) {
-    var response = new ErrorResponse(Collections.singletonMap(key, message), ZonedDateTime.now());
+  private ResponseEntity<ErrorResponse> createSingletonErrorResponse(String message) {
+    log.error(String.format("(PersonExceptionHandler) Catch error - %s", message));
+    var response =
+        new ErrorResponse(
+            Collections.singletonMap(PersonExceptionHandler.MESSAGE_FIELD_NAME, message),
+            ZonedDateTime.now());
 
-    return new ResponseEntity<>(response, status);
+    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
   }
 }

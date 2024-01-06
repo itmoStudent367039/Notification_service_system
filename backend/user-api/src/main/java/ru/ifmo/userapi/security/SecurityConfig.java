@@ -21,10 +21,10 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+  private final AuthenticationFilter authenticationFilter;
+
   @Value("${urls.appUrl}")
   private String appUrl;
-
-  private final AuthenticationFilter authenticationFilter;
 
   @Autowired
   public SecurityConfig(AuthenticationFilter authenticationFilter) {
@@ -47,6 +47,8 @@ public class SecurityConfig {
             auth ->
                 auth.requestMatchers(HttpMethod.POST, "/people/create")
                     .authenticated()
+                    .requestMatchers("/admin")
+                    .hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/people")
                     .authenticated()
                     .anyRequest()

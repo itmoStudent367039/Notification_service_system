@@ -1,3 +1,9 @@
 #Server
 ACTIVE_PROFILE: dev
 
+#JWT
+SECRET_WORD: small_talk
+EXPIRATION_USER_TIME: 20
+ISSUER: yestai
+SUBJECT: User details
+CLAIM_NAME: email

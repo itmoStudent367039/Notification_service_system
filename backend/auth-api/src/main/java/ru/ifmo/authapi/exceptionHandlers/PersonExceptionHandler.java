@@ -7,14 +7,17 @@ import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ru.ifmo.authapi.responses.ErrorResponse;
 import ru.ifmo.authapi.util.exceptions.ValidException;
+import ru.ifmo.common.responses.ErrorResponse;
 
 @RestControllerAdvice
 @Slf4j
@@ -53,6 +56,30 @@ public class PersonExceptionHandler {
         new ErrorResponse(Collections.singletonMap(MESSAGE_FIELD_NAME, "id"), ZonedDateTime.now());
 
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler
+  private ResponseEntity<ErrorResponse> handleException(HttpClientErrorException e) {
+    log.error(
+        String.format(
+            "(Registration) Catch exception while sending creation request to user-api: code - %s; message - %s",
+            e.getStatusCode(), e.getMessage()));
+    ErrorResponse errorResponse = e.getResponseBodyAs(ErrorResponse.class);
+    return ResponseEntity.status(e.getStatusCode())
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(errorResponse);
+  }
+
+  @ExceptionHandler
+  private ResponseEntity<ErrorResponse> handleException(HttpServerErrorException e) {
+    log.error(
+        String.format(
+            "(Registration) Catch exception while sending creation request to user-api: code - %s; message - %s",
+            e.getStatusCode(), e.getMessage()));
+    ErrorResponse errorResponse = e.getResponseBodyAs(ErrorResponse.class);
+    return ResponseEntity.status(e.getStatusCode())
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(errorResponse);
   }
 
   private ResponseEntity<ErrorResponse> createSingletonErrorResponse(String message) {

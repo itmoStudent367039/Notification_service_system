@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.ifmo.mailsender.models.Mail;
+import ru.ifmo.common.mail.Mail;
 import ru.ifmo.mailsender.services.MailService;
 import ru.ifmo.mailsender.validators.DomainNotExists;
 import ru.ifmo.mailsender.validators.ValidException;

@@ -1,4 +1,4 @@
-package ru.ifmo.userapi.responses;
+package ru.ifmo.common.responses;
 
 import java.time.ZonedDateTime;
 import java.util.Map;

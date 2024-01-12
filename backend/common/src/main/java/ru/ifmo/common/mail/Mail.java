@@ -1,14 +1,15 @@
-package ru.ifmo.mailsender.models;
+package ru.ifmo.common.mail;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
+@SuperBuilder
 public class Mail implements Serializable {
 
   @NotEmpty(message = "Email should not be empty")

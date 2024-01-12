@@ -11,7 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.ifmo.userapi.responses.ErrorResponse;
+import ru.ifmo.common.responses.ErrorResponse;
 import ru.ifmo.userapi.util.ValidException;
 
 @RestControllerAdvice

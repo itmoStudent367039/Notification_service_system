@@ -1,17 +1,20 @@
-package ru.ifmo.userapi.dto;
+package ru.ifmo.common.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-public class CreationDTO implements Serializable {
+public class RegistrationDTO {
+
   @NotEmpty(message = "Username could not be empty")
   @Size(min = 2, max = 31, message = "Username size is between 2 and 31 symbols")
   private String username;
+
+  @NotEmpty(message = "Password could not be empty")
+  @Size(min = 2, max = 31, message = "Password size is between 2 and 31 symbols")
+  private String password;
 
   @NotEmpty(message = "Email should not be empty")
   @Email(message = "Email should be valid")

@@ -16,6 +16,7 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.JacksonUtils;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.web.client.RestTemplate;
+import ru.ifmo.common.dto.NoticeDTO;
 import ru.ifmo.common.models.Notice;
 import ru.ifmo.noticesworker.send.CustomNoticeSender;
 import ru.ifmo.noticesworker.send.NoticeSender;
@@ -35,10 +36,10 @@ public class AppConfig {
   }
 
   @Bean
-  public ConsumerFactory<String, Notice> consumerFactory(ObjectMapper objectMapper) {
+  public ConsumerFactory<String, NoticeDTO> consumerFactory(ObjectMapper objectMapper) {
     var props = new HashMap<String, Object>();
 
-    JsonDeserializer<Notice> deserializer = new JsonDeserializer<>(objectMapper);
+    JsonDeserializer<NoticeDTO> deserializer = new JsonDeserializer<>(objectMapper);
 
     deserializer.addTrustedPackages("*");
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
@@ -46,17 +47,15 @@ public class AppConfig {
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, deserializer);
     props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 
-    //  props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-
-    var kafkaProducerFactory = new DefaultKafkaConsumerFactory<String, Notice>(props);
+    var kafkaProducerFactory = new DefaultKafkaConsumerFactory<String, NoticeDTO>(props);
     kafkaProducerFactory.setValueDeserializer(deserializer);
     return kafkaProducerFactory;
   }
 
   @Bean
-  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Notice>>
+  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, NoticeDTO>>
       kafkaListenerContainerFactory(ObjectMapper objectMapper) {
-    ConcurrentKafkaListenerContainerFactory<String, Notice> factory =
+    ConcurrentKafkaListenerContainerFactory<String, NoticeDTO> factory =
         new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory(objectMapper));
     return factory;

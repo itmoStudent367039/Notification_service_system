@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
+import ru.ifmo.common.dto.NoticeDTO;
 import ru.ifmo.common.models.Notice;
 import ru.ifmo.common.models.NoticeState;
 
@@ -14,9 +15,9 @@ public class CustomNoticeSender implements NoticeSender {
   private final RequestDirector requestDirector;
 
   @Override
-  public NoticeState send(Notice notice) {
+  public NoticeState send(NoticeDTO noticeDTO) {
     try {
-      this.sendNoticeToMailService(notice);
+      this.sendNoticeToMailService(noticeDTO);
       return NoticeState.DELIVERED;
     } catch (HttpClientErrorException e) {
       log.error(e.getStatusText() + " " + e.getStatusCode());
@@ -26,7 +27,7 @@ public class CustomNoticeSender implements NoticeSender {
     return NoticeState.NOT_DELIVERED;
   }
 
-  private void sendNoticeToMailService(Notice notice) throws RestClientException {
-    requestDirector.sendNoticeToMailService(notice);
+  private void sendNoticeToMailService(NoticeDTO noticeDTO) throws RestClientException {
+    requestDirector.sendNoticeToMailService(noticeDTO);
   }
 }

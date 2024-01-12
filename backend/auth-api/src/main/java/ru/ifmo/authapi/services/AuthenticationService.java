@@ -17,22 +17,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.client.HttpClientErrorException;
-import ru.ifmo.authapi.dto.LoginDTO;
-import ru.ifmo.authapi.dto.RegistrationDTO;
-import ru.ifmo.authapi.dto.RegistrationValidator;
+import org.springframework.web.client.HttpServerErrorException;
+import ru.ifmo.common.dto.CreationDTO;
+import ru.ifmo.common.dto.LoginDTO;
+import ru.ifmo.common.dto.RegistrationDTO;
+import ru.ifmo.authapi.util.validators.RegistrationValidator;
 import ru.ifmo.authapi.email.EmailUtils;
-import ru.ifmo.authapi.email.Mail;
 import ru.ifmo.authapi.requests.RequestDirector;
-import ru.ifmo.authapi.requests.UserInfo;
-import ru.ifmo.authapi.responses.ErrorResponse;
-import ru.ifmo.authapi.responses.HttpResponse;
-import ru.ifmo.authapi.responses.PersonView;
 import ru.ifmo.authapi.security.JwtUtil;
 import ru.ifmo.authapi.user.Person;
 import ru.ifmo.authapi.user.PersonDetails;
 import ru.ifmo.authapi.util.ObjectConverter;
 import ru.ifmo.authapi.util.exceptions.ValidException;
 import ru.ifmo.authapi.util.validators.BindingChecker;
+import ru.ifmo.common.mail.Mail;
+import ru.ifmo.common.responses.ErrorResponse;
+import ru.ifmo.common.responses.PersonView;
+import ru.ifmo.common.responses.UserInfo;
 
 @Service
 @Slf4j
@@ -79,44 +80,30 @@ public class AuthenticationService {
 
     this.validateRegistration(registrationDTO, bindingResult);
 
-    Person saved = this.savePerson(registrationDTO);
-
-    String token = jwtUtil.generateTokenWithConfirmExpirationTime(saved.getEmail());
-
-    try {
-      requestDirector.sendUserApiCreationRequest(registrationDTO, token);
-    } catch (HttpClientErrorException e) {
-      log.error(
-          String.format(
-              "(Registration) Catch exception while sending creation request to user-api: code - %s; message - %s",
-              e.getStatusCode(), e.getMessage()));
-      peopleService.delete(saved);
-      log.warn("Delete user with email: " + registrationDTO.getEmail());
-      return this.extractResponseFromException(e);
-    }
+    String token = jwtUtil.generateTokenWithConfirmExpirationTime(registrationDTO.getEmail());
 
     try {
       this.sendMessageToMailService(
           registrationDTO.getUsername(), registrationDTO.getEmail(), token);
+      this.savePerson(registrationDTO);
+      log.info(
+          String.format(
+              "(Registration) Successfully register user with email - %s",
+              registrationDTO.getEmail()));
+      return ResponseEntity.status(HttpStatus.CREATED)
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(
+              HttpResponse.builder()
+                  .message(SUCCESSFULLY_REGISTER)
+                  .timestamp(ZonedDateTime.now())
+                  .build());
     } catch (HttpClientErrorException e) {
       log.error(
           String.format(
               "(Registration) Catch exception while sending request to mail-sender: code - %s; message - %s",
               e.getStatusCode(), e.getMessage()));
-      log.warn("(Registration) Send delete request to user-api: " + registrationDTO.getEmail());
-      requestDirector.sendUserApiDeleteRequest(token);
       return this.extractResponseFromException(e);
     }
-    log.info(
-        String.format("(Registration) Successfully register user with email - %s", registrationDTO.getEmail()));
-
-    return ResponseEntity.status(HttpStatus.CREATED)
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(
-            HttpResponse.builder()
-                .message(SUCCESSFULLY_REGISTER)
-                .timestamp(ZonedDateTime.now())
-                .build());
   }
 
   public ResponseEntity<?> login(LoginDTO loginDTO, BindingResult bindingResult)
@@ -140,7 +127,10 @@ public class AuthenticationService {
   }
 
   public void confirmAccount(String token)
-      throws JWTVerificationException, UsernameNotFoundException {
+      throws JWTVerificationException,
+          UsernameNotFoundException,
+          HttpClientErrorException,
+          HttpServerErrorException {
 
     String email = jwtUtil.validateTokenAndRetrieveClaim(token);
     Optional<Person> personOptional = peopleService.findByEmail(email);
@@ -149,6 +139,8 @@ public class AuthenticationService {
       Person person = personOptional.get();
       person.setEnable(true);
       peopleService.update(person);
+      CreationDTO dto = new CreationDTO(person.getUsername(), person.getEmail());
+      requestDirector.sendUserApiCreationRequest(dto, token);
     } else {
       throw new UsernameNotFoundException(email);
     }
@@ -186,7 +178,9 @@ public class AuthenticationService {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     PersonDetails details = (PersonDetails) authentication.getPrincipal();
     log.info(
-        String.format("(AuthenticatePerson) Successfully authentication, email - %s", details.getPerson().getEmail()));
+        String.format(
+            "(AuthenticatePerson) Successfully authentication, email - %s",
+            details.getPerson().getEmail()));
 
     return ResponseEntity.ok(
         UserInfo.builder()
@@ -201,7 +195,8 @@ public class AuthenticationService {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     PersonDetails details = (PersonDetails) authentication.getPrincipal();
     this.peopleService.delete(details.getPerson());
-    log.info(String.format("(DeleteUser) Delete user with email: %s", details.getPerson().getEmail()));
+    log.info(
+        String.format("(DeleteUser) Delete user with email: %s", details.getPerson().getEmail()));
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
@@ -272,9 +267,9 @@ public class AuthenticationService {
     checker.throwIfBindResultHasErrors(bindingResult);
   }
 
-  private Person savePerson(RegistrationDTO registrationDTO) {
+  private void savePerson(RegistrationDTO registrationDTO) {
     Person converted = objectConverter.convertToObject(registrationDTO, Person.class);
     converted.setPassword(passwordEncoder.encode(converted.getPassword()));
-    return peopleService.save(converted);
+    peopleService.save(converted);
   }
 }

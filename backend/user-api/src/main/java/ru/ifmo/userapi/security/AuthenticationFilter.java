@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.ifmo.common.responses.UserInfo;
 import ru.ifmo.userapi.requests.RequestDirector;
-import ru.ifmo.userapi.requests.UserInfo;
 
 @Component
 @Slf4j

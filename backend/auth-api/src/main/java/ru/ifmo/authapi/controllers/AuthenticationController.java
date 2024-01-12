@@ -3,6 +3,7 @@ package ru.ifmo.authapi.controllers;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,13 +12,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.ifmo.authapi.dto.LoginDTO;
-import ru.ifmo.authapi.dto.RegistrationDTO;
-import ru.ifmo.authapi.requests.UserInfo;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import ru.ifmo.common.dto.LoginDTO;
+import ru.ifmo.common.dto.RegistrationDTO;
 import ru.ifmo.authapi.services.AuthenticationService;
 import ru.ifmo.authapi.util.exceptions.ValidException;
+import ru.ifmo.common.responses.UserInfo;
 
 @Controller
+@Slf4j
 public class AuthenticationController {
   private final AuthenticationService authenticationService;
 

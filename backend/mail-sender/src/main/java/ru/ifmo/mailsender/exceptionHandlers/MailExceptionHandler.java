@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.ifmo.mailsender.responses.ErrorResponse;
+import ru.ifmo.common.responses.ErrorResponse;
 import ru.ifmo.mailsender.validators.DomainNotExists;
 import ru.ifmo.mailsender.validators.ValidException;
 

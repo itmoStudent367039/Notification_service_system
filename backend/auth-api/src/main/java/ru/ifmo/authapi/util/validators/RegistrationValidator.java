@@ -1,4 +1,4 @@
-package ru.ifmo.authapi.dto;
+package ru.ifmo.authapi.util.validators;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -7,6 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.ifmo.authapi.services.PeopleService;
 import ru.ifmo.authapi.user.Person;
+import ru.ifmo.common.dto.RegistrationDTO;
 
 import java.util.Optional;
 

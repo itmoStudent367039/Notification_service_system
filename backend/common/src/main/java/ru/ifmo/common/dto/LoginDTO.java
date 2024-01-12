@@ -1,4 +1,4 @@
-package ru.ifmo.authapi.dto;
+package ru.ifmo.common.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

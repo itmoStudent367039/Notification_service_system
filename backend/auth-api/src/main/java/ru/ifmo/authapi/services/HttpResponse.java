@@ -1,14 +1,14 @@
-package ru.ifmo.authapi.responses;
+package ru.ifmo.authapi.services;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.time.ZonedDateTime;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
-
-import java.time.ZonedDateTime;
+import ru.ifmo.common.responses.PersonView;
 
 @SuperBuilder
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HttpResponse {
   private ZonedDateTime timestamp;
   private String message;

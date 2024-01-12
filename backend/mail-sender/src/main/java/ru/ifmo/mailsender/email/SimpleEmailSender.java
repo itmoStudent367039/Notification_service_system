@@ -8,7 +8,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import ru.ifmo.mailsender.models.Mail;
+import ru.ifmo.common.mail.Mail;
 
 @Service
 @Slf4j

@@ -23,11 +23,15 @@ public class Notice {
   @Column(nullable = false)
   private String value;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @Column(nullable = false)
+  private String subject;
+
+  @OneToOne
   @JoinColumn(name = "person_id", referencedColumnName = "id")
   private Person person;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private NoticeState state;
+
 }

@@ -18,7 +18,7 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.JacksonUtils;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.web.client.RestTemplate;
-import ru.ifmo.common.models.Notice;
+import ru.ifmo.common.dto.NoticeDTO;
 import ru.ifmo.userapi.services.DataSender;
 import ru.ifmo.userapi.services.DataSenderKafka;
 import ru.ifmo.userapi.services.NoticesService;
@@ -51,20 +51,20 @@ public class AppConfig {
   }
 
   @Bean
-  public ProducerFactory<String, Notice> producerFactory(ObjectMapper mapper) {
+  public ProducerFactory<String, NoticeDTO> producerFactory(ObjectMapper mapper) {
     var configProps = new HashMap<String, Object>();
     configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
-    var kafkaProducerFactory = new DefaultKafkaProducerFactory<String, Notice>(configProps);
+    var kafkaProducerFactory = new DefaultKafkaProducerFactory<String, NoticeDTO>(configProps);
     kafkaProducerFactory.setValueSerializer(new JsonSerializer<>(mapper));
     return kafkaProducerFactory;
   }
 
   @Bean
-  public KafkaTemplate<String, Notice> kafkaTemplate(
-      ProducerFactory<String, Notice> producerFactory) {
+  public KafkaTemplate<String, NoticeDTO> kafkaTemplate(
+      ProducerFactory<String, NoticeDTO> producerFactory) {
     return new KafkaTemplate<>(producerFactory);
   }
 
@@ -75,7 +75,9 @@ public class AppConfig {
 
   @Bean
   public DataSender dataSender(
-      NewTopic topic, KafkaTemplate<String, Notice> kafkaTemplate, NoticesService noticesService) {
+      NewTopic topic,
+      KafkaTemplate<String, NoticeDTO> kafkaTemplate,
+      NoticesService noticesService) {
     return new DataSenderKafka(kafkaTemplate, noticesService, topic.name());
   }
 }

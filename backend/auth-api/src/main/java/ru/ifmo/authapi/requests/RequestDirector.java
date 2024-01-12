@@ -6,9 +6,10 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import ru.ifmo.authapi.dto.RegistrationDTO;
-import ru.ifmo.authapi.email.Mail;
-import ru.ifmo.authapi.responses.PersonView;
+import ru.ifmo.common.dto.CreationDTO;
+import ru.ifmo.common.dto.RegistrationDTO;
+import ru.ifmo.common.mail.Mail;
+import ru.ifmo.common.responses.PersonView;
 
 @Component
 public class RequestDirector {
@@ -31,10 +32,10 @@ public class RequestDirector {
     this.restTemplate = restTemplate;
   }
 
-  public void sendUserApiCreationRequest(RegistrationDTO dto, String token)
+  public void sendUserApiCreationRequest(CreationDTO dto, String token)
       throws RestClientException {
     HttpHeaders headers = this.initHeadersWithAuthorization(token);
-    HttpEntity<RegistrationDTO> request = new HttpEntity<>(dto, headers);
+    HttpEntity<CreationDTO> request = new HttpEntity<>(dto, headers);
     System.out.println("auth: point 1 - try to send token:" + token);
     restTemplate.postForEntity(userApiCreatePersonUrl, request, Void.class);
   }

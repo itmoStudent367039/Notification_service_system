@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.ifmo.userapi.dto.CreationDTO;
-import ru.ifmo.userapi.responses.PersonView;
+import ru.ifmo.common.responses.PersonView;
+import ru.ifmo.common.dto.CreationDTO;
 import ru.ifmo.userapi.services.PeopleService;
 import ru.ifmo.userapi.util.ValidException;
 

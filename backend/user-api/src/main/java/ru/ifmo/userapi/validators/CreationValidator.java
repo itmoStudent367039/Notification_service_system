@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.ifmo.common.models.Person;
 import ru.ifmo.common.repositories.PeopleRepository;
-import ru.ifmo.userapi.dto.CreationDTO;
+import ru.ifmo.common.dto.CreationDTO;
 
 import java.util.Optional;
 

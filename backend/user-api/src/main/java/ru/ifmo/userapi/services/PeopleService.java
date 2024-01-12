@@ -16,9 +16,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.client.HttpClientErrorException;
 import ru.ifmo.common.models.Person;
 import ru.ifmo.common.repositories.PeopleRepository;
-import ru.ifmo.userapi.dto.CreationDTO;
+import ru.ifmo.common.responses.PersonView;
+import ru.ifmo.common.dto.CreationDTO;
 import ru.ifmo.userapi.requests.RequestDirector;
-import ru.ifmo.userapi.responses.PersonView;
 import ru.ifmo.userapi.security.JwtUtil;
 import ru.ifmo.userapi.util.ObjectConverter;
 import ru.ifmo.userapi.util.ValidException;
@@ -88,7 +88,7 @@ public class PeopleService {
 
     log.info(String.format("Try to find user by email: %s", email));
 
-    log.info(optional.map(String.class::cast).orElse("can not find user with this email"));
+    log.info(optional.map(String.class::cast).orElse("Can not find user with this email"));
 
     try {
       String jwtToken = jwtUtil.generateTokenWithCommonUserTime(email);
@@ -112,7 +112,7 @@ public class PeopleService {
   }
 
   public List<Person> getPeopleExceptOne(String email) {
-    return getPeople().parallelStream()
+    return getPeople().stream()
         .filter(person -> !email.equals(person.getEmail()))
         .collect(Collectors.toList());
   }

@@ -2,7 +2,7 @@ package ru.ifmo.mailsender.email;
 
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
-import ru.ifmo.mailsender.models.Mail;
+import ru.ifmo.common.mail.Mail;
 
 @Service
 public interface EmailSender {

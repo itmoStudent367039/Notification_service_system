@@ -45,12 +45,14 @@ public class SecurityConfig {
         .cors(Customizer.withDefaults())
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers(HttpMethod.POST, "/people/create")
+                auth.requestMatchers(HttpMethod.POST, "/people")
                     .authenticated()
                     .requestMatchers("/admin")
                     .hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/people")
                     .authenticated()
+                    .requestMatchers(HttpMethod.PATCH, "/people")
+                    .hasRole("USER")
                     .anyRequest()
                     .permitAll())
         .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)

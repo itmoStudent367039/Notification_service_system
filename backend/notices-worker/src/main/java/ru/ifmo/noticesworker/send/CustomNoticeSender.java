@@ -6,7 +6,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import ru.ifmo.common.dto.NoticeDTO;
-import ru.ifmo.common.models.Notice;
 import ru.ifmo.common.models.NoticeState;
 
 @RequiredArgsConstructor
@@ -18,6 +17,7 @@ public class CustomNoticeSender implements NoticeSender {
   public NoticeState send(NoticeDTO noticeDTO) {
     try {
       this.sendNoticeToMailService(noticeDTO);
+      this.sendNoticeToTelegramBot(noticeDTO);
       return NoticeState.DELIVERED;
     } catch (HttpClientErrorException e) {
       log.error(e.getStatusText() + " " + e.getStatusCode());
@@ -29,5 +29,8 @@ public class CustomNoticeSender implements NoticeSender {
 
   private void sendNoticeToMailService(NoticeDTO noticeDTO) throws RestClientException {
     requestDirector.sendNoticeToMailService(noticeDTO);
+  }
+  private void sendNoticeToTelegramBot(NoticeDTO noticeDTO) throws RestClientException {
+    requestDirector.sendNoticeToTelegramBot(noticeDTO);
   }
 }

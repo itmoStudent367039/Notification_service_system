@@ -11,7 +11,6 @@ import ru.ifmo.common.models.NoticeState;
 import ru.ifmo.common.responses.Message;
 import ru.ifmo.userapi.util.ObjectConverter;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +24,6 @@ public class AdminService {
   public void notifyUsers(Message message) {
     String adminEmail = getAuthenticatedAdminEmail();
     noticesService.deleteAll();
-
     peopleService
         .getPeopleExceptOne(adminEmail)
         .forEach(
@@ -40,14 +38,6 @@ public class AdminService {
               noticesService.createNotice(notice);
               dataSender.send(converter.convertToObject(notice, NoticeDTO.class), notice);
             });
-
-//    List<Notice> notSent;
-//    do {
-//      notSent = noticesService.getNotSentNotices();
-//      log.warn(String.format("Not sent notices: %s", notSent.stream().map(Notice::getId).toList()));
-//      notSent.forEach(
-//          notice -> dataSender.send(converter.convertToObject(notice, NoticeDTO.class), notice));
-//    } while (!notSent.isEmpty());
     noticesService.deleteAll();
   }
 

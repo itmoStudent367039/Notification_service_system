@@ -17,7 +17,6 @@ import org.springframework.kafka.support.JacksonUtils;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.web.client.RestTemplate;
 import ru.ifmo.common.dto.NoticeDTO;
-import ru.ifmo.common.models.Notice;
 import ru.ifmo.noticesworker.send.CustomNoticeSender;
 import ru.ifmo.noticesworker.send.NoticeSender;
 import ru.ifmo.noticesworker.send.RequestDirector;

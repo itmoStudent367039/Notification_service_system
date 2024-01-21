@@ -24,3 +24,4 @@ application:
       name: ${KAFKA_TOPIC_NAME}
   urls:
     mail-service: ${MAIL_SERVICE_URL}
+    telegram-bot: ${TELEGRAM_BOT_URL}

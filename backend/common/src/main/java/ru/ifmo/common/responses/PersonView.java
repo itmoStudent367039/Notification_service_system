@@ -13,7 +13,7 @@ public class PersonView implements Serializable {
 
   private String email;
 
-  private Long telegramChatId;
+  private String telegramNickName;
 
   private Integer vkId;
 }

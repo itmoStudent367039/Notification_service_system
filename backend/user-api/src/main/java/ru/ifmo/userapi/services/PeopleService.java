@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.client.HttpClientErrorException;
+import ru.ifmo.common.dto.UpdateDTO;
 import ru.ifmo.common.models.Person;
 import ru.ifmo.common.repositories.PeopleRepository;
 import ru.ifmo.common.responses.PersonView;
@@ -77,6 +78,26 @@ public class PeopleService {
                 ResponseEntity.status(HttpStatus.OK)
                     .body(converter.convertToObject(person, PersonView.class)))
         .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+  }
+
+  @Transactional
+  public ResponseEntity<?> updatePerson(UpdateDTO updateDTO, BindingResult bindingResult)
+      throws ValidException {
+    bindingChecker.throwIfBindResultHasErrors(bindingResult);
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String email = (String) authentication.getPrincipal();
+
+    Optional<Person> current = repository.findByEmail(email);
+    if (current.isPresent()) {
+      Person person = current.get();
+      person.setTelegramNickName(updateDTO.getTelegramNickName());
+
+      return ResponseEntity.status(HttpStatus.OK)
+          .body(converter.convertToObject(repository.save(person), PersonView.class));
+    } else {
+      return ResponseEntity.badRequest().build();
+    }
   }
 
   @Transactional

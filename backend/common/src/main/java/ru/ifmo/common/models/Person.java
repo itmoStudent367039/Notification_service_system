@@ -1,7 +1,6 @@
 package ru.ifmo.common.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -34,7 +33,7 @@ public class Person {
   private String email;
 
   @Column(unique = true)
-  private Long telegramChatId;
+  private String telegramNickName;
 
   @Column(unique = true)
   private Integer vkId;

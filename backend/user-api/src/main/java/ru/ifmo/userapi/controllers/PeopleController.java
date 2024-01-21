@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.ifmo.common.dto.UpdateDTO;
 import ru.ifmo.common.responses.PersonView;
 import ru.ifmo.common.dto.CreationDTO;
 import ru.ifmo.userapi.services.PeopleService;
@@ -28,6 +29,11 @@ public class PeopleController {
   @GetMapping
   public ResponseEntity<PersonView> getCurrentPerson() {
     return service.getCurrentPerson();
+  }
+
+  @PatchMapping
+  public ResponseEntity<?> updatePerson(@RequestBody UpdateDTO updateDTO, BindingResult result) throws ValidException {
+    return service.updatePerson(updateDTO, result);
   }
 
   @DeleteMapping

@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './js/App';
 import CorrectInput from "./js/components/CorrectInput";
-import './js/FormSwitch';
+import './js/FormSwitcher';
 import './js/Initialization';
 import ErrorMessage from "./js/components/ErrorMessage";
-import {Router} from "./js/Router";
+import {Router} from "./js/utils/Router";
 
 // export function createApp(){
 //     const root = ReactDOM.createRoot(document.getElementById(""));

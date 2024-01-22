@@ -1,6 +1,6 @@
 import '../../css/StyleLogIn.css'
 import {getInputLogIn, getInputRegistration} from "../Initialization";
-import {switchForm} from "../FormSwitch";
+import {switchForm} from "../FormSwitcher";
 
 export function Home() {
     return (

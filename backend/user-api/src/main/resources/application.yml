@@ -2,6 +2,13 @@ spring:
   profiles:
     active: ${ACTIVE_PROFILE:dev}
 
+  thymeleaf:
+    check-template-location: false
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    client-id: ${KAFKA_CLIENT_ID}
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${PG_DB_URL}
@@ -19,6 +26,18 @@ spring:
 server:
   port: ${SERVER_PORT}
 
+jwt:
+  jwtSecret: ${SECRET_WORD}
+  expirationUserTime: ${EXPIRATION_USER_TIME}
+  issuer: ${ISSUER}
+  subject: ${SUBJECT}
+  claimName: ${CLAIM_NAME}
+
 urls:
   authApiAuthenticate: ${AUTH_API_AUTHENTICATE}
   appUrl: ${APP_URL}
+  authApiDeleteUser: ${AUTH_API_DELETE}
+
+application:
+  kafka:
+    topic-name: ${KAFKA_TOPIC_NAME}

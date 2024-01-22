@@ -6,13 +6,17 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import ru.ifmo.common.responses.UserInfo;
 
 @Component
 public class RequestDirector {
+  private final RestTemplate restTemplate;
+
   @Value("${urls.authApiAuthenticate}")
   private String authUrl;
 
-  private final RestTemplate restTemplate;
+  @Value("${urls.authApiDeleteUser}")
+  private String deleteUrl;
 
   @Autowired
   public RequestDirector(RestTemplate restTemplate) {
@@ -21,12 +25,20 @@ public class RequestDirector {
 
   public ResponseEntity<UserInfo> sendAuthApiAuthenticateRequest(String token)
       throws RestClientException {
+    HttpHeaders headers = this.initHeadersWithAuthorization(token);
+    return restTemplate.exchange(
+        authUrl, HttpMethod.GET, new HttpEntity<>(headers), UserInfo.class);
+  }
+
+  public void sendAuthApiDeleteRequest(String token) throws RestClientException {
+    HttpHeaders headers = this.initHeadersWithAuthorization(token);
+    restTemplate.exchange(deleteUrl, HttpMethod.DELETE, new HttpEntity<>(headers), Void.class);
+  }
+
+  private HttpHeaders initHeadersWithAuthorization(String token) {
     HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
     headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-
-    HttpEntity<String> request = new HttpEntity<>(headers);
-
-    return restTemplate.exchange(authUrl, HttpMethod.GET, request, UserInfo.class);
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    return headers;
   }
 }

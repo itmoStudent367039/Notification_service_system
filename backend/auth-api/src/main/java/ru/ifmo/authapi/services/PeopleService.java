@@ -24,9 +24,9 @@ public class PeopleService {
   }
 
   @Transactional
-  public Person save(Person person) {
+  public void save(Person person) {
     person.setRole(PersonRole.ROLE_USER);
-    return peopleRepository.save(person);
+    peopleRepository.save(person);
   }
 
   @Transactional

@@ -3,6 +3,7 @@ package ru.ifmo.authapi.controllers;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,17 +12,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.ifmo.authapi.dto.LoginDTO;
-import ru.ifmo.authapi.dto.RegistrationDTO;
-import ru.ifmo.authapi.requests.UserInfo;
-import ru.ifmo.authapi.responses.HttpResponse;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import ru.ifmo.common.dto.LoginDTO;
+import ru.ifmo.common.dto.RegistrationDTO;
 import ru.ifmo.authapi.services.AuthenticationService;
-import ru.ifmo.authapi.util.exceptions.DomainNotExists;
 import ru.ifmo.authapi.util.exceptions.ValidException;
-
-import java.net.UnknownHostException;
+import ru.ifmo.common.responses.UserInfo;
 
 @Controller
+@Slf4j
 public class AuthenticationController {
   private final AuthenticationService authenticationService;
 
@@ -33,16 +33,16 @@ public class AuthenticationController {
   @PostMapping("/registration")
   @ResponseBody
   public ResponseEntity<?> performRegistration(
-          @RequestBody @Valid RegistrationDTO registrationDTO, BindingResult result)
-      throws ValidException, UnknownHostException, DomainNotExists {
+      @RequestBody @Valid RegistrationDTO registrationDTO, BindingResult result)
+      throws ValidException {
 
     return authenticationService.register(registrationDTO, result);
   }
 
   @PostMapping("/login")
   @ResponseBody
-  public ResponseEntity<?> performLogin(
-          @RequestBody @Valid LoginDTO loginDTO, BindingResult result) throws ValidException {
+  public ResponseEntity<?> performLogin(@RequestBody @Valid LoginDTO loginDTO, BindingResult result)
+      throws ValidException {
 
     return authenticationService.login(loginDTO, result);
   }
@@ -67,11 +67,17 @@ public class AuthenticationController {
 
   @PostMapping("/resend-token")
   @ResponseBody
-  public ResponseEntity<HttpResponse> resendConfirmToken(
+  public ResponseEntity<?> resendConfirmToken(
       @RequestBody @Valid LoginDTO loginDTO, BindingResult result)
       throws ValidException, UsernameNotFoundException, BadCredentialsException {
 
     return authenticationService.resendConfirmToken(loginDTO, result);
+  }
+
+  @DeleteMapping("/delete")
+  @ResponseBody
+  public ResponseEntity<Void> deleteUser() {
+    return authenticationService.deleteUser();
   }
 
   @GetMapping("/authenticate")

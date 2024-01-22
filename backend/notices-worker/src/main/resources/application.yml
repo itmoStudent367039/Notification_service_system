@@ -1,0 +1,27 @@
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID}
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${PG_DB_URL}
+    username: ${PG_DB_USERNAME}
+    password: ${PG_DB_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    generate-ddl: true
+    show-sql: true
+
+application:
+  kafka:
+    topic:
+      name: ${KAFKA_TOPIC_NAME}
+  urls:
+    mail-service: ${MAIL_SERVICE_URL}
+    telegram-bot: ${TELEGRAM_BOT_URL}

@@ -5,6 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,11 +17,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.ifmo.authapi.services.PersonDetailsService;
-import ru.ifmo.authapi.user.PersonDetails;
-
-import java.io.IOException;
 
 @Component
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
   private final JwtUtil jwtUtil;
   private final PersonDetailsService service;
@@ -38,23 +38,27 @@ public class JwtFilter extends OncePerRequestFilter {
       throws ServletException, IOException, JWTVerificationException, UsernameNotFoundException {
 
     String jwt = extractJwtFromHeader(request);
-    System.out.println("auth-api (filter): from user jwt - " + jwt);
     if (StringUtils.hasText(jwt)) {
-      System.out.println("auth-api (filter): token isn't empty");
+      log.info("(JwtFilter) Registered request with jwt: " + jwt);
       try {
         String email = getEmailFromJwt(jwt);
-        System.out.println("auth-api (filter): extract email - " + email);
+
+        log.info(String.format("(JwtFilter) Email: %s", email));
+
         UserDetails userDetails = service.loadUserByUsername(email);
 
-        System.out.println(
-            "auth-api (filter): receive user - "
-                + ((PersonDetails) userDetails).getPerson().getEmail());
+        log.info("(JwtFilter) Found user with this email");
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
           this.authenticateUser(userDetails);
         }
-      } catch (UsernameNotFoundException | JWTVerificationException ignored) {
-
+      } catch (UsernameNotFoundException | JWTVerificationException e) {
+        log.error(
+            this.getClass().getName()
+                + "catch exception - "
+                + e.getClass()
+                + ": "
+                + e.getMessage());
       }
     }
 
@@ -80,7 +84,6 @@ public class JwtFilter extends OncePerRequestFilter {
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(
             userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-    System.out.println("auth-api (filter): set authentication");
     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
   }
 }

@@ -7,7 +7,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 import ru.ifmo.authapi.util.ObjectConverter;
 import ru.ifmo.authapi.util.validators.BindingChecker;
-import ru.ifmo.authapi.util.validators.DomainValidator;
 
 @Configuration
 public class AppConfig {
@@ -32,10 +31,5 @@ public class AppConfig {
     template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
     return template;
-  }
-
-  @Bean
-  public DomainValidator domainValidator() {
-    return new DomainValidator();
   }
 }

@@ -4,6 +4,11 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Optional;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,14 +21,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.ifmo.common.responses.UserInfo;
 import ru.ifmo.userapi.requests.RequestDirector;
-import ru.ifmo.userapi.requests.UserInfo;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Optional;
 
 @Component
+@Slf4j
 public class AuthenticationFilter extends OncePerRequestFilter {
   private final RequestDirector requestDirector;
 
@@ -40,26 +42,25 @@ public class AuthenticationFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
 
     String jwt = extractJwtFromHeader(request);
-    System.out.println("user: point 2 - receive -- " + jwt);
     if (StringUtils.hasText(jwt)) {
 
       try {
+        log.info("Registered request with jwt: " + jwt);
+        log.info("Send request to auth-api to authenticate user");
         ResponseEntity<UserInfo> authResponse = requestDirector.sendAuthApiAuthenticateRequest(jwt);
-        System.out.println("user: point 4 receive " + authResponse.getStatusCode());
+        log.info("Response with code: " + authResponse.getStatusCode());
 
         if (authResponse.getStatusCode().isSameCodeAs(HttpStatus.OK)) {
-
           Optional<UserInfo> info = Optional.ofNullable(authResponse.getBody());
           info.ifPresent(this::authenticateUser);
         }
 
       } catch (RestClientException e) {
-        System.out.println("User-api: Exc from authenticate resp to auth-api -");
-        System.out.println(e.getMessage());
+        log.error(String.format("Catch RestClientException: message - %s", e.getMessage()));
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       }
     } else {
-      System.out.println("empty jwt");
+      log.warn("Request with empty jwt-token");
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 
@@ -78,7 +79,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
   }
 
   private void authenticateUser(UserInfo userInfo) {
-    System.out.println("body: " + userInfo.getEmail());
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(
             userInfo.getEmail(),
@@ -86,5 +86,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             Collections.singletonList(new SimpleGrantedAuthority(userInfo.getRole())));
 
     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    log.info(String.format("Set authentication with email: %s", userInfo.getEmail()));
   }
 }

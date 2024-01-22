@@ -30,6 +30,11 @@ public class Person {
   @Column(nullable = false, unique = true)
   private String email;
 
+  @NotEmpty(message = "Username could not be empty")
+  @Size(min = 2, max = 31, message = "Username size is between 2 and 31 symbols")
+  @Column(nullable = false, unique = true)
+  private String username;
+
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private PersonRole role;
@@ -39,4 +44,5 @@ public class Person {
 
   @Column(nullable = false)
   private Boolean enable = false;
+
 }

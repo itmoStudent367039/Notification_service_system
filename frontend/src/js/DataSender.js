@@ -18,7 +18,7 @@ export async function sendRequestLogIn(body){
     }else{
         createCorrectInput("appPasswordLogIn");
         createCorrectInput("appEmailLogIn");
-        window.open("/userAccount")
+        window.location.href = '/account';
     }
   });
 }
@@ -43,7 +43,7 @@ export async function sendRequestSignUp(body){
           createCorrectInput("appPasswordSignUp");
           createCorrectInput("appMailSignUp");
           createCorrectInput("appNameSignUp");
-          window.open("/checkMailPage")
+          window.open("/checkMailPage");
       }
   });
 }

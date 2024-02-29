@@ -116,7 +116,7 @@ public class AuthenticationService {
     log.info(String.format("(Login) Success authentication - %s", person.getEmail()));
 
     try {
-      return this.getCurrentUserFromUserServiceAndFormResponse(token);
+      return this.getCurrentUserFromUserServiceAndFormResponse(token, person.getRole().name());
     } catch (HttpClientErrorException e) {
       log.error(
           String.format(
@@ -238,16 +238,18 @@ public class AuthenticationService {
     requestDirector.sendMessageToMailService(mail);
   }
 
-  private ResponseEntity<HttpResponse> getCurrentUserFromUserServiceAndFormResponse(String token)
-      throws HttpClientErrorException {
+  private ResponseEntity<HttpResponse> getCurrentUserFromUserServiceAndFormResponse(
+      String token, final String role) throws HttpClientErrorException {
     ResponseEntity<PersonView> response = requestDirector.getCurrentPerson(token);
+    var message = Optional.ofNullable(response.getBody());
+    message.ifPresent((person) -> person.setPersonRole(role));
 
     return ResponseEntity.status(response.getStatusCode())
         .contentType(MediaType.APPLICATION_JSON)
         .header(HttpHeaders.AUTHORIZATION, token)
         .body(
             HttpResponse.builder()
-                .data(response.getBody())
+                .data(message.get())
                 .message(SUCCESSFULLY_LOGIN)
                 .timestamp(ZonedDateTime.now())
                 .build());

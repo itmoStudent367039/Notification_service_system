@@ -14,6 +14,7 @@ public class PersonView implements Serializable {
   private String email;
 
   private String telegramNickName;
+  private String personRole;
 
-  private Integer vkId;
+//  private Integer vkId;
 }

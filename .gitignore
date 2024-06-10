@@ -4,3 +4,4 @@
 /docker-compose.yml
 /backend/gradle/
 /.idea/
+/backend/.gradle/
